@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  id: 1
+  layer_type: 1
+  parent_id: 1
+  file: MyString
+
+two:
+  id: 1
+  layer_type: 1
+  parent_id: 1
+  file: MyString

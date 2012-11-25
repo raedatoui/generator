@@ -20,5 +20,3 @@ public/assets/*
 .DS_Store
 .project
 active_admin.css
-public/coffeescripts/*
-solr/data/*
