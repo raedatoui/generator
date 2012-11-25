@@ -1,3 +1,4 @@
 class Layer < ActiveRecord::Base
-  attr_accessible :file, :id, :layer_type, :parent_id
+	has_ancestry
+	attr_accessible :file, :id, :layer_type, :parent_id
 end

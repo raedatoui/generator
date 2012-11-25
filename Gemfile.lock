@@ -28,12 +28,10 @@ GEM
     activesupport (3.2.9)
       i18n (~> 0.6)
       multi_json (~> 1.0)
-    acts-as-taggable-on (2.3.3)
-      rails (~> 3.0)
+    ancestry (1.3.0)
+      activerecord (>= 2.3.14)
     arel (3.0.2)
-    bcrypt-ruby (3.0.1)
     builder (3.0.4)
-    cancan (1.6.8)
     capistrano (2.13.5)
       highline
       net-scp (>= 1.0.0)
@@ -46,6 +44,8 @@ GEM
     carrierwave (0.7.1)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
+    choice (0.1.6)
+    chronic (0.8.0)
     chunky_png (1.2.6)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -58,12 +58,15 @@ GEM
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
       sass (~> 3.1)
+    compass-rails (1.0.3)
+      compass (>= 0.12.2, < 0.14)
     configuration (1.3.2)
-    devise (2.1.2)
-      bcrypt-ruby (~> 3.0)
-      orm_adapter (~> 0.1)
-      railties (~> 3.1)
-      warden (~> 1.2.1)
+    eco (1.0.0)
+      coffee-script
+      eco-source
+      execjs
+    eco-source (1.1.0.rc.1)
+    ensure_valid_encoding (0.5.2)
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
@@ -74,6 +77,10 @@ GEM
       activesupport (>= 3.1, < 4.1)
       haml (~> 3.1)
       railties (>= 3.1, < 4.1)
+    haml_coffee_assets (1.7.2)
+      coffee-script (>= 1.0.0)
+      sprockets (>= 2.0.3)
+      tilt (>= 1.3.3)
     has_scope (0.5.1)
     highline (1.6.15)
     hike (1.2.1)
@@ -91,10 +98,12 @@ GEM
       configuration (>= 0.0.5)
       rake (>= 0.8.1)
     libv8 (3.3.10.4)
+    libxml-ruby (2.3.3)
     mail (2.4.4)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    marc (0.5.0)
     mime-types (1.19)
     multi_json (1.3.7)
     mysql2 (0.3.11)
@@ -105,14 +114,17 @@ GEM
     net-ssh (2.6.2)
     net-ssh-gateway (1.1.0)
       net-ssh (>= 1.99.1)
-    nifty-generators (0.4.6)
     open_gem (1.4.2)
       launchy (~> 0.3.5)
-    orm_adapter (0.4.0)
+    openurl (0.4.2)
+      ensure_valid_encoding
+      marc
     polyglot (0.3.3)
     rack (1.4.1)
     rack-cache (1.2)
       rack (>= 0.4)
+    rack-cors (0.2.7)
+      rack
     rack-ssl (1.3.2)
       rack
     rack-test (0.6.2)
@@ -125,6 +137,11 @@ GEM
       activesupport (= 3.2.9)
       bundler (~> 1.0)
       railties (= 3.2.9)
+    rails-erd (1.0.0)
+      activerecord (>= 3.0)
+      activesupport (>= 3.0)
+      choice (~> 0.1.6)
+      ruby-graphviz (~> 1.0.4)
     railties (3.2.9)
       actionpack (= 3.2.9)
       activesupport (= 3.2.9)
@@ -139,14 +156,17 @@ GEM
     responders (0.9.3)
       railties (~> 3.1)
     rmagick (2.13.1)
+    ruby-graphviz (1.0.8)
+    ruby-haml-js (0.0.3)
+      execjs
+      sprockets (>= 2.0.0)
     sass (3.2.3)
     sass-rails (3.2.5)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
       tilt (~> 1.3)
-    simple_form (2.0.4)
-      actionpack (~> 3.0)
-      activemodel (~> 3.0)
+    spine-rails (0.1.0)
+      rails (>= 3.1.0)
     sprockets (2.2.1)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -167,34 +187,41 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
-    warden (1.2.1)
-      rack (>= 1.0)
+    whenever (0.8.0)
+      activesupport (>= 2.3.4)
+      chronic (>= 0.6.3)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  acts-as-taggable-on
-  cancan
+  ancestry
   capistrano
   capistrano-ext
   capistrano_colors
   carrierwave
-  coffee-rails (~> 3.2.1)
+  coffee-rails
   compass
-  devise
+  compass-rails
+  eco
   execjs
-  haml (>= 3.1.2)
-  haml-rails (>= 0.3.4)
+  haml
+  haml-rails
+  haml_coffee_assets
   inherited_resources
   jquery-rails
+  libxml-ruby
   mysql2
-  nifty-generators
   open_gem
-  rails (= 3.2.9)
+  openurl
+  rack-cors
+  rails
+  rails-erd
   rmagick
-  sass-rails (~> 3.2.3)
-  simple_form
+  ruby-haml-js
+  sass-rails
+  spine-rails
   therubyracer
-  uglifier (>= 1.0.3)
+  uglifier
   unicorn
+  whenever
