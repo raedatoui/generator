@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-PsdLayers::Application.load_tasks
+Graphcomposer::Application.load_tasks

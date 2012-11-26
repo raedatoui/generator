@@ -11,14 +11,31 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121125085734) do
+ActiveRecord::Schema.define(:version => 20121126001231) do
 
-  create_table "layers", :force => true do |t|
-    t.integer  "layer_type"
-    t.string   "file"
+  create_table "layer_types", :force => true do |t|
+    t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "layers", :force => true do |t|
+    t.integer  "layer_type_id"
+    t.string   "file"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.string   "ancestry"
+    t.integer  "width"
+    t.integer  "height"
+    t.integer  "layer_width"
+    t.integer  "layer_height"
+    t.integer  "clones"
+    t.integer  "x"
+    t.integer  "y"
+    t.string   "position"
+    t.float    "scale"
+    t.string   "name"
+    t.string   "blend"
   end
 
   add_index "layers", ["ancestry"], :name => "index_layers_on_ancestry"
