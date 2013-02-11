@@ -7,7 +7,7 @@
 
 #= require jquery_ujs
 #= require exo/exo
-#= require paper
+
 
 
 #= require_tree ./lib
