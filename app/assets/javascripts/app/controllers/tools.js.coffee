@@ -42,4 +42,9 @@ class App.Tools extends Exo.Spine.Controller
 	showAdd: =>
 		@addController = new App.AddLayers
 		@addController.appendTo @actionsPanel
+		@addChild @addController
+		@addController.bind "closed", @selectionMade
 		@addButton.addClass "selected"
+
+	selectionMade: =>
+		@addButton.removeClass "selected"

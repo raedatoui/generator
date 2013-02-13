@@ -12,12 +12,23 @@ class App.AddLayers extends Exo.Spine.Controller
 		for type in App.LayerType.all()
 			btn = new App.AddLayerTypes(item:type)
 			@append btn
-		TweenLite.to @el, 1,
-			height: 200
+			btn.bind "selected", @handleSelection
+		TweenLite.to @el, 0.75,
+			height: 250
 
 	doActivate: ->
 		@onActivated()
 
 	doDeactivate: ->
-		@onDeactivated()
+		TweenLite.to @el, 0.75,
+			height: 0
+			onComplete: =>
+				@trigger "closed"
+				@el.remove()
+				@onDeactivated()
 
+	handleSelection: (item) =>
+		console.log @parent().el
+		@editor = new App.PropsEditor
+		@editor.appendTo @parent().el
+		@editor.prepareWithModel item

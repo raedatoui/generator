@@ -12,31 +12,24 @@
  *= require h5bp/normalize
  *= require h5bp/main
  *= require_self
- *= require font
  */
+
 @import "compass";
+@include global-reset;
 
 @import "ui/*.png";
 @include all-ui-sprites;
 
+@import "common/*";
 @import "tools";
+@import "visualizer";
 
 html {
-	/*background-image: url(navy_blue.png);*/
 	background-color: #FAFCFB;
-	overflow: hidden;
-}
-
-#app {
-	overflow: hidden;
-	z-index: 0;
-	width: 100%;
-	height: 100%;
 	position: relative;
-
-	.visualizer {
-		width: 100%;
-		height: 100%;
-		margin: auto;
-	}
+	height: 100%;
+}
+body {
+	height: 100%;
+	overflow: hidden;
 }
