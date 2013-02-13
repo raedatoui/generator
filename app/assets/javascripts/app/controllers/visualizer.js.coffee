@@ -1,7 +1,5 @@
 class App.Visualizer extends Exo.Spine.Controller
 
-	tag: "canvas"
-
 	className: 'visualizer'
 
 	CENTER: 450
@@ -26,13 +24,14 @@ class App.Visualizer extends Exo.Spine.Controller
 		, 250
 
 	keep_rendering: =>
-		paper.setup(@el[0])
-		for i of App.Layer.all()
-			rect = new paper.Rectangle(200*i, 100*i, 200, 100)
-			path = new paper.Path.Rectangle(rect)
-			path.fillColor = '#e9e9ff'
 
-			# Draw the view now:
-		paper.view.draw()
+		# paper.setup(@el[0])
+		# for i of App.Layer.all()
+		# 	rect = new paper.Rectangle(200*i, 100*i, 200, 100)
+		# 	path = new paper.Path.Rectangle(rect)
+		# 	path.fillColor = '#e9e9ff'
+
+		# 	# Draw the view now:
+		# paper.view.draw()
 
 

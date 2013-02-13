@@ -7,8 +7,8 @@
 
 #= require jquery_ujs
 #= require exo/exo
-
-
+#= require TweenMax.min
+#= require hamlcoffee
 
 #= require_tree ./lib
 #= require_self
@@ -30,5 +30,8 @@ class App extends Spine.Controller
 	layersLoaded: =>
 		@visualizer = new App.Visualizer
 		@append @visualizer
+
+		@tools = new App.Tools
+		@append @tools
 
 window.App = App

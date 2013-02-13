@@ -1,0 +1,12 @@
+.bar
+	.toggle.ui-bar-open
+
+.actions
+	.button#add
+		.icon.ui-add
+
+	.button#delete
+		.icon.ui-delete
+
+	.button#info
+		.icon.ui-info
