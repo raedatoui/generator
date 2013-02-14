@@ -1,10 +1,20 @@
-class App.PropsEditor extends Spine.Controller
-  # elements:
-  #   '.items': items
-  # 
-  # events:
-  #   'click .item': 'itemClick'
+class App.PropsEditor extends Exo.Spine.Controller
 
-  constructor: ->
-    super
-    # ...
+	className: "props"
+
+	constructor: ->
+		super
+			initialState: Exo.Node.States.ACTIVATED
+
+	prepareWithModel: (item) =>
+		@item = item
+		@render()
+
+	render: =>
+		@html @view(@item.slug+"_editor",@item)
+
+	doActivate: ->
+		@onActivated()
+
+	doDeactivate: ->
+		@onDeactivated()
