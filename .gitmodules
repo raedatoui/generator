@@ -1,6 +1,3 @@
 [submodule "vendor/exo.js"]
 	path = vendor/exo.js
 	url = git@github.com:jpettersson/exo.js.git
-[submodule "vendor/paper.js"]
-	path = vendor/paper.js
-	url = git://github.com/paperjs/paper.js.git
