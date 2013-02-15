@@ -1,29 +1,41 @@
 %h2 Color Layer
 
-%ul
-	%li
-		%span.label name
-		%input
+%form#new_layer.new_layer{ :accept-charset => "UTF-8", :action => "/layers", :enctype => "multipart/form-data", :method => "post", :data-remote => "true", :data-type => "json"}
 
-	%li
-		%span.label diameter
-		%input{:type => 'number'}
+	%input{:name => "utf8", :type => "hidden", :value => "✓"}
+	%input{:name => "authenticity_token", :type => "hidden", :value => $("meta[name=csrf-token]").attr("content")}
 
-	%li
-		%span.label alpha
-		%input{:type => 'number', :step => '0.1', :min => '0', :max => '1'}
+	%ul
+		%li
+			%span.label name
+			%input{ :name => "layer[name]"}}
 
-	%li
-		%span.label x
-		%input{:type => 'number'}
+		/ %li
+		/ 	%span.label diameter
+		/ 	%input{:type => 'number'}
 
-	%li
-		%span.label y
-		%input{:type => 'number'}
+		%li
+			%span.label alpha
+			%input{:type => 'number', :step => '0.1', :min => '0', :max => '1',  :name => "layer[alpha]"}
 
-	%li
-		%span.label blend
-		%select
-			%option{:value => "normal"} Normal
-			%option{:value => "screen"} Screen
-			%option{:value => "screen"} Multiply
+		%li
+			%span.label x
+			%input{:type => 'number', :name => "layer[x]"}
+
+		%li
+			%span.label y
+			%input{:type => 'number',  :name => "layer[y]"}
+
+		%li
+			%span.label blend
+			%select{:name => "layer[blend]"}
+				%option{:value => "normal"} Normal
+				%option{:value => "screen"} Screen
+				%option{:value => "screen"} Multiply
+
+		%li
+			%span.label file
+			%input{:type => 'number',  :name => "layer[file]", :type=>"file"}
+
+		%li
+			%input{:name => "commit", :type => "submit", :value => "Create Color Layer"}
