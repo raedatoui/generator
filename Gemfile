@@ -30,7 +30,6 @@ gem "uglifier", :group => :development
 gem "compass-rails", :group => :assets
 gem "compass"
 
-
 gem 'spine-rails'
 gem 'eco'
 gem 'ruby-haml-js'

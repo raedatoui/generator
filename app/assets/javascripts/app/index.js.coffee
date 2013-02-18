@@ -8,6 +8,7 @@
 #= require jquery_ujs
 #= require exo/exo
 #= require TweenMax.min
+#= require spectrum
 #= require hamlcoffee
 
 #= require_tree ./lib

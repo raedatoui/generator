@@ -5,14 +5,17 @@ $barWidth: 20px;
 $gray : #ccc;
 $dark : #444;
 $gutter: 20px;
+$white: #ededed;
+$bg: #222;
 
 #tools {
-	background-color: #222;
+	background-color: $bg;
 	height: 100%;
 	float: left;
 	width: $panelWidth;
 	position: absolute;
 	top: 0;
+	color: $white;
 	left: -$panelWidth+$barWidth;
 	// background: transparent url('ui/progress-bg.png') repeat 0 0;
 	.bar {
@@ -97,7 +100,6 @@ $gutter: 20px;
 
 	.props {
 		width: 100%;
-		color: $gray;
 		margin-top: 30px;
 		padding: 0 $gutter;
 		h2 {
@@ -109,9 +111,15 @@ $gutter: 20px;
 		}
 		li {
 			margin-bottom: 10px;
-			border-bottom: solid 1px $gray;
 			height: 50px;
 			padding: 5px;
+			&.btns {
+				input {
+					width: 120px;
+					font-size: 12px;
+					margin-right: 8px;
+				}
+			}
 		}
 
 		.label {
@@ -123,14 +131,66 @@ $gutter: 20px;
 			line-height: 30px;
 		}
 		input, select {
+			background: none !important;
+			@include border-radius(5px);
+			border: solid 2px $gray !important;
+			color: $white;
 			width: 180px;
 			float: left;
 			height: 30px;
 			border: 0;
 			padding: 0 5px;
+			&:focus {
+				border: solid 2px $gray !important;
+				background-color: $dark !important;
+				outline: none !important;
+			}
 		}
 		select {
+			-webkit-appearance: none;
 			width: 190px;
 		}
+		input[type=submit]:disabled, button:disabled {
+			background-color: #f00;
+		}
+		input[type=submit], input[type=button]{
+			&:hover {
+				background-color: $dark !important;
+			}
+		}
 	}
+}
+	.sp-replacer {
+		&:hover {
+			background-color: $dark !important;
+		}
+	}
+
+.sp-container, .sp-palette, .sp-picker-container {
+	color: $white !important;
+	font-family: 'Open Sans', sans-serif;
+	@include border-radius(5px);
+	background-color: $bg !important;
+	border: solid 2px $gray !important;
+
+	input {
+		color: $white !important;
+		border: solid 1px $gray !important;
+		&:focus {
+			border: solid 1px $gray !important;
+			background-color: $dark !important;
+		}
+	}
+	button {
+		color: $white !important;
+		font-family: 'Open Sans', sans-serif !important;
+		@include border-radius(5px);
+		background: none !important;
+		font-size: 12px !important;
+		border: solid 1px $gray !important;
+		&:hover {
+			background-color: $dark !important;
+		}
+	}
+
 }

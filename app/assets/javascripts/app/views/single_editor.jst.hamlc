@@ -1,8 +1,10 @@
-%h2 Color Layer
+%h2 Single Layer
+
+
 
 / %form#new_layer.new_layer{ :accept-charset => "UTF-8", :action => "/layers", :enctype => "multipart/form-data", :method => "post", :data-remote => "true", :data-type => "json"}
-/ %input{:name => "utf8", :type => "hidden", :value => "✓"}
-/ %input{:name => "authenticity_token", :type => "hidden", :value => $("meta[name=csrf-token]").attr("content")}
+	/ %input{:name => "utf8", :type => "hidden", :value => "✓"}
+	/ %input{:name => "authenticity_token", :type => "hidden", :value => $("meta[name=csrf-token]").attr("content")}
 
 
 %form#new_layer.new_layer{ :accept-charset => "UTF-8", :action => "/layers", :enctype => "multipart/form-data", :method => "post", :data-remote => "true", :data-type => "json"}
@@ -13,9 +15,12 @@
 			%input{ :name => "layer[name]"}}
 
 		%li
-			%span.label diameter
-			%input{:type => 'number', :name => "layer[layer_width]", :id => 'lw', :onchange => "$('#lh').val($('#lw').val())"}
-			%input{:type => 'hidden', :name => "layer[layer_height]", :id => "lh"}
+			%span.label Width
+			%input{:type => 'number', :name => "layer[layer_width]", :id => 'lw'}
+
+		%li
+			%span.label Height
+			%input{:type => 'number', :name => "layer[layer_height]", :id => "lh"}
 
 		%li
 			%span.label alpha
@@ -37,8 +42,8 @@
 				%option{:value => "screen"} Multiply
 
 		%li
-			%span.label color
-			%input{:type => "text", :name => "layer[color]", :id => "picker", :style => "display: none;"}
+			%span.label file
+			%input{:name => "layer[file]", :type => "file"}
 
 		%li.btns
 			%input{:id=> "subBtn", :name => "commit", :type => "submit", :value => "Create Color Layer"}

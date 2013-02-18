@@ -28,7 +28,26 @@ class App.AddLayers extends Exo.Spine.Controller
 				@onDeactivated()
 
 	handleSelection: (item) =>
-		console.log @parent().el
-		@editor = new App.PropsEditor
-		@editor.appendTo @parent().el
-		@editor.prepareWithModel item
+		@currentEditorData = item
+		@activateNext new App.PropsEditor
+
+
+	activateNext: (next) ->
+		unless @next
+			@next = next
+			@addChild @next											# Add the section to the controller hierarchy
+			@next.bind "onDeactivated", @onControllerDeactivated	# Get notified when the controller is deactivated
+			@next.bind "onActivated", @onControllerActivated		# and activated.
+			@next.appendTo @parent().el										# Also append it's @el to the DOM.
+			@next.activate()										# Attempt to activate the section.
+
+	onControllerActivated: (controller) =>
+		@current = controller
+		@current.prepareWithModel @currentEditorData
+		@next = null
+
+	onControllerDeactivated: (controller) =>
+		@removeChild controller
+		controller.release()
+		#talk to the button controller OR use jquery
+		$('.layer-type .button').removeClass "selected"

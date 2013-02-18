@@ -17,6 +17,7 @@ config/database.yml
 public/stylesheets/compiled/*
 public/system/**/*
 public/assets/*
+public/*
 .DS_Store
 .project
 active_admin.css
