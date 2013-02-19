@@ -3,4 +3,4 @@
 .button
 	.icon{:style => url}
 
-/ .label= @name
+.label= @name
