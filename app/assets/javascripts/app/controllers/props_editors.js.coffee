@@ -4,8 +4,7 @@ class App.PropsEditor extends Exo.Spine.Controller
 
 	events:
 		"click #cancel" : "deactivate"
-	# 	'submit form.new_layer': 'save'
-		# 'click #subBtn' : 'save'
+		"submit form": "save"
 
 	elements:
 		"form" : "form"
@@ -36,6 +35,7 @@ class App.PropsEditor extends Exo.Spine.Controller
 		@form.ajaxForm
 			dataType:  'json'
 			beforeSend: =>
+				console.log "wtf"
 				@submitBtn.attr
 				percentVal = "0%"
 				@bar.width percentVal
@@ -47,8 +47,11 @@ class App.PropsEditor extends Exo.Spine.Controller
 				@percent.html percentVal
 
 			complete: (xhr) =>
-				layer = new App.layer
-				console.log xhr
+				layer = new App.Layer
+				attr = JSON.parse xhr.responseText
+				layer.updateAttributes attr
+				console.log layer,attr
+				#layer.save()
 
 	doActivate: ->
 		TweenLite.to @el, 1,

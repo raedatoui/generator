@@ -41,7 +41,7 @@ $bg: #222;
 	.actions {
 		width: $panelWidth - $barWidth - 20;
 		padding: $gutter;
-		height: 350px;
+		height: 200px;
 		.button {
 			float: left;
 			margin-right: 8px;
@@ -70,10 +70,13 @@ $bg: #222;
 			position: relative;
 			height: 0px;
 			border-bottom: solid 6px $gray;
+			#tooltip {
+				position: absolute;
+				top: 60px;
+			}
 			.layer-type {
 				float: left;
 				position: relative;
-				width: 100%;
 				.button {
 					float: left;
 					width: 50px;
@@ -100,7 +103,6 @@ $bg: #222;
 
 	.props {
 		width: 100%;
-		margin-top: 30px;
 		padding: 0 $gutter;
 		@include opacity(0);
 		h2 {
@@ -111,8 +113,8 @@ $bg: #222;
 			margin-top: 25px;
 		}
 		li {
-			margin-bottom: 10px;
-			height: 50px;
+			margin-bottom: 5px;
+			height: 30px;
 			padding: 5px;
 			&.btns {
 				input {
@@ -125,11 +127,11 @@ $bg: #222;
 
 		.label {
 			float: left;
-			width: 70px;
+			width: 80px;
 			display: block;
 			text-transform: uppercase;
 			font-size: 12px;
-			line-height: 30px;
+			line-height: 20px;
 		}
 		input, select {
 			background: none !important;
@@ -138,7 +140,8 @@ $bg: #222;
 			color: $white;
 			width: 180px;
 			float: left;
-			height: 30px;
+			font-size: 12px;
+			height: 20px;
 			border: 0;
 			padding: 0 5px;
 			&:focus {
@@ -149,7 +152,7 @@ $bg: #222;
 		}
 		select {
 			-webkit-appearance: none;
-			width: 190px;
+			width: 194px;
 		}
 		input[type=submit]:disabled, button:disabled {
 			background-color: #f00;
@@ -157,15 +160,35 @@ $bg: #222;
 		input[type=submit], input[type=file], input[type=button]{
 			background: none !important;
 			font-size: 14px;
+			height: 30px;
 			&:hover {
 				background-color: $dark !important;
 			}
 		}
+		input[type=file] {
+			height: 20px;
+		}
 	}
 }
 	.sp-replacer {
+		background-color: $bg !important;
+		@include border-radius(5px);
+		border: solid 2px $gray !important;
+		height: 16px;
+		color: $white;
+		padding: 0;
+		width: 190px;
 		&:hover {
 			background-color: $dark !important;
+			color: $white;
+		}
+		.sp-preview {
+			height: 16px;
+			border: none;
+			width: 170px;
+			.sp-preview-inner {
+				width: 100%;
+			}
 		}
 	}
 

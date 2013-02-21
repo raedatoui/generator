@@ -4,8 +4,8 @@
 / %input{:name => "utf8", :type => "hidden", :value => "✓"}
 / %input{:name => "authenticity_token", :type => "hidden", :value => $("meta[name=csrf-token]").attr("content")}
 
-%form#new_layer.new_layer{ :accept-charset => "UTF-8", :action => "/layers", :enctype => "multipart/form-data", :method => "post", :data-remote => "true", :data-type => "json"}
-
+%form#new_layer.new_layer{ :accept-charset => "UTF-8", :action => "/layers", :method => "post", :data-type => "json"}
+	%input{:name => "layer[layer_type_id]", :type => "hidden", :value => @id}
 	%ul
 		%li
 			%span.label name

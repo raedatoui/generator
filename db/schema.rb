@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130215074415) do
+ActiveRecord::Schema.define(:version => 20130218163715) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(:version => 20130215074415) do
     t.string   "name"
     t.string   "blend"
     t.float    "alpha"
+    t.string   "color"
   end
 
   add_index "layers", ["ancestry"], :name => "index_layers_on_ancestry"

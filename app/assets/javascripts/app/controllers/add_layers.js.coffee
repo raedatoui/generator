@@ -2,6 +2,9 @@ class App.AddLayers extends Exo.Spine.Controller
 
 	className: "add-layers"
 
+	elements:
+		"#tooltip" : "tooltip"
+
 	constructor: ->
 		super
 			initialState: Exo.Node.States.ACTIVATED
@@ -13,8 +16,16 @@ class App.AddLayers extends Exo.Spine.Controller
 			btn = new App.AddLayerTypes(item:type)
 			@append btn
 			btn.bind "selected", @handleSelection
+			btn.bind "mouseover", (item) =>
+				$("#tooltip").text(item.name)
+				$("#tooltip").show()
+			btn.bind "mouseout", =>
+				$("#tooltip").hide()
+
 		TweenLite.to @el, 0.75,
-			height: 250
+			height: 80
+			onComplete: =>
+				@el.append('<div id="tooltip"></div>')
 
 	doActivate: ->
 		@onActivated()

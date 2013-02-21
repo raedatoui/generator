@@ -4,6 +4,8 @@ class App.AddLayerTypes extends Spine.Controller
 
 	events:
 		"click" : "handleClick"
+		"mouseover"	: "handleMouseOver"
+		"mouseout"	: "handleMouseOut"
 
 	elements:
 		".button" : "button"
@@ -25,3 +27,9 @@ class App.AddLayerTypes extends Spine.Controller
 		$(".layer-type .button").removeClass "selected"
 		@button.addClass "selected"
 		@trigger "selected", @item
+
+	handleMouseOver: =>
+		@trigger "mouseover", @item
+
+	handleMouseOut: =>
+		@trigger "mouseout", @item
