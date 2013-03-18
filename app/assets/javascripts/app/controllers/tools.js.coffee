@@ -25,6 +25,7 @@ class App.Tools extends Exo.Spine.Controller
 
 	togglePanel: =>
 		if panelClosed
+			@trigger "moved", @el.width() - @bar.width()
 			TweenLite.to @el, .5,
 				css:
 					left: 0
@@ -32,6 +33,7 @@ class App.Tools extends Exo.Spine.Controller
 					panelClosed = false
 					@toggleBtn.removeClass("ui-bar-open").addClass("ui-bar-close")
 		else
+			@trigger "moved", @bar.width()
 			TweenLite.to @el, .5,
 				css:
 					left: -@el.width() + @bar.width()

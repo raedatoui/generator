@@ -7,6 +7,45 @@
 		height: 100%;
 		margin: auto;
 		position: absolute;
+		left: $barWidth;
 		background-image: url(gridme.png);
+		.button {
+			float: left;
+			margin-right: 8px;
+			width: 76px;
+			height: 76px;
+			position: absolute;
+			top: 10px;
+			left: 10px;
+			@include border-radius(5px);
+			border: solid 3px $dark;
+			.icon {
+				width: 50px;
+				height: 50px;
+				margin: 13px;
+			}
+			&:hover, &.selected {
+				background-color: $gray;
+			}
+		}
 	}
 }
+
+
+
+.node circle {
+  cursor: pointer;
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font-size: 11px;
+}
+
+path.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+

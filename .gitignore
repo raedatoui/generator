@@ -20,4 +20,6 @@ public/assets/*
 public/*
 .DS_Store
 .project
+vendor/d3/*
+vendor/exo.js/*
 active_admin.css

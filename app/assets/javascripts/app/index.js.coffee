@@ -7,9 +7,11 @@
 
 #= require jquery_ujs
 #= require exo/exo
+#= require exo/spine.exo
 #= require TweenMax.min
 #= require spectrum
 #= require hamlcoffee
+#= require d3.min
 
 #= require_tree ./lib
 #= require_self
@@ -34,5 +36,7 @@ class App extends Spine.Controller
 
 		@tools = new App.Tools
 		@append @tools
+		@tools.bind "moved", (w) =>
+			@visualizer.slide w
 
 window.App = App
