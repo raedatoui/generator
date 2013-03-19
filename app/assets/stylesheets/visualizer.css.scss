@@ -34,18 +34,27 @@
 
 
 .node circle {
-  cursor: pointer;
-  stroke: #000;
-  stroke-width: 1.5px;
+	cursor: pointer;
+	stroke: #000;
+	stroke-width: 1.5px;
+	width: 60px;
+	height: 60px;
 }
 
 .node text {
-  font-size: 11px;
+	font-size: 11px;
+	@include linear-gradient(#242424,#000000);
+	color: #fff;
 }
 
-path.link {
-  fill: none;
-  stroke: #ccc;
-  stroke-width: 1.5px;
+.link {
+	fill: none;
+	stroke: #666;
+	stroke-width: 2px;
 }
 
+.label{
+	font-size: 11px;
+	@include linear-gradient(#242424,#000000);
+	color: #fff;
+}

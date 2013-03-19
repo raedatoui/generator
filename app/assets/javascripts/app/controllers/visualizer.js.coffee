@@ -23,6 +23,8 @@ class App.Visualizer extends Exo.Spine.Controller
 		, 250
 
 	keep_rendering: =>
+		@offset = 20
+		@layoutMode = 'h'
 		w = @el.width()
 		h = @el.height()
 		@i = 0
@@ -35,6 +37,17 @@ class App.Visualizer extends Exo.Spine.Controller
 			@rootNode = json
 			@setLayoutMode "h"
 
+		gradient = @vis.append("svg:defs").append("svg:linearGradient")
+			.attr("id", "gradient")
+			.attr("x1", "0%")
+			.attr("y1", "0%")
+			.attr("x2", "100%")
+			.attr("y2", "100%")
+			.attr("spreadMethod", "pad")
+
+		gradient.append("svg:stop").attr("offset", "0%").attr("stop-color", "#666").attr "stop-opacity", 1
+		gradient.append("svg:stop").attr("offset", "100%").attr("stop-color", "#000").attr "stop-opacity", 1
+
 		$(window).resize @debounce
 
 
@@ -44,7 +57,6 @@ class App.Visualizer extends Exo.Spine.Controller
 		timeoutID = setTimeout =>
 			@setLayoutMode @layoutMode
 		, 125
-		console.log
 
 	toggleLayout: =>
 		if @layoutMode is "h"
@@ -53,70 +65,120 @@ class App.Visualizer extends Exo.Spine.Controller
 			@setLayoutMode "h"
 
 	setLayoutMode: (mode) =>
+		delay = false
+		if @layoutMode != mode
+			delay = true
+			@clickNode @rootNode
 		@layoutMode = mode
-		w = @el.width()
-		h = @el.height()
+		w = $(window).width() - @offset
+		h = $(window).height()
+		@el.width w
+		@el.height h
 		@vis.attr("width", w).attr("height", h)
-		console.log @vis
+
 		if mode is "h"
-			@updateFunc = @updateH
 			@tree = d3.layout.tree().size([w-160, h-160])
 			@diagonal = d3.svg.diagonal().projection((d) ->
 				[d.x, d.y]
 			)
 		else
-			console.log mode
-			@updateFunc = @updateV
 			@tree = d3.layout.tree().size([h-160, w - 160])
 			@diagonal = d3.svg.diagonal().projection((d) ->
 				[d.y, d.x]
 			)
+		if delay
+			setTimeout =>
+				@clickNode @rootNode
+			, @duration*2
+		else
+			@update @rootNode
 
-		@updateFunc?(@rootNode)
 
 	slide: (w) =>
+		console.log w
+		@offset = w
+		@setLayoutMode @layoutMode
 		TweenLite.to @el, .5,
 			css:
 				left: w
 
-	updateH: (source) =>
+
+	update: (source) =>
 		# Compute the new tree layout.
 		nodes = @tree.nodes(@rootNode).reverse()
-
 		# Update the nodes…
 		node = @vis.selectAll("g.node").data(nodes, (d) =>
 			d.id or (d.id = ++@i)
 		)
-		nodeEnter = node.enter().append("svg:g").attr("class", "node").attr("transform", (d) ->
-			"translate(" + source.x0 + "," + source.y0 + ")"
-		).on("mouseover", (d) =>
-			d3.select("text").remove()
-			@vis.append("text").text(d.name).attr("x", d.x+16).attr("y", d.y+3).attr "id", d.name
-		).on "mouseout", (d) =>
-			d3.select("text").remove()
 
-		nodeEnter.append("svg:circle").attr("r", 10).on "click", @clickNode
+		console.log @layoutMode
+		if @layoutMode is "h"
+			nodeEnter = node.enter().append("svg:g").attr("class", "node").attr("transform", (d) ->
+				"translate(" + source.x0 + "," + source.y0 + ")"
+			)
+			# .on("mouseover", (d) =>
+			# 	d3.select("text").remove()
+			# 	d3.select("rect.bg").remove()
+			# 	@vis.append("text").text(d.name).attr("x", d.x+20).attr("y", d.y+5).attr("id", d.name).attr("fill","#fff")
+			# 	wi = parseInt(d3.select("text").style("width").split('px')[0]) + 8
+			# 	@vis.insert("svg:rect", "text").attr("x", d.x+16).attr("y", d.y-12).attr("width",wi).attr("height",24).style("fill", "url(#gradient)").attr("class","bg")
+
+			# )
+			# .on "mouseout", (d) =>
+			# 	d3.select("text").remove()
+			# 	d3.select("rect.bg").remove()
+
+			nodeEnter.append("svg:circle").attr("r", 10).on "click", @clickNode
 
 
-		# nodeEnter.append("svg:text").attr("x", (d) ->
-		# 	(if d._children then -8 else 8)
-		# ).attr("y", 3).text (d) ->
-		# 	d.name
+			nodeEnter.transition().duration(@duration).attr("transform", (d) ->
+				"translate(" + d.x + "," + d.y + ")"
+			).style("opacity", 1).select("circle").style("fill", (d) ->
+				(if d.children then "#FC2B2B" else "#767676")
+			)
 
 
-		nodeEnter.transition().duration(@duration).attr("transform", (d) ->
-			"translate(" + d.x + "," + d.y + ")"
-		).style("opacity", 1).select("circle").style("fill", (d) ->
-			console.log (if d.children then "#f00" else "#fff")
-			(if d.children then "#f66" else "#999")
-		)
+			node.transition().duration(@duration).attr("transform", (d) ->
+				"translate(" + d.x + "," + d.y + ")"
+			).style "opacity", 1
 
-		node.transition().duration(@duration).attr("transform", (d) ->
-			"translate(" + d.x + "," + d.y + ")"
-		).style "opacity", 1
-		node.exit().transition().duration(@duration).attr("transform", (d) ->
-			"translate(" + source.x + "," + source.y + ")"
-		).style("opacity", 1e-6).remove()
+			node.exit().transition().duration(@duration).attr("transform", (d) ->
+				"translate(" + source.x + "," + source.y + ")"
+			).style("opacity", 1e-6).remove()
+
+		else
+			nodeEnter = node.enter().append("svg:g").attr("class", "node").attr("transform", (d) ->
+				"translate(" + source.y0 + "," + source.x0 + ")"
+			)
+			# .on("mouseover", (d) =>
+			# 	d3.select("text").remove()
+			# 	@vis.append("text").text(d.name).attr("x", d.x+16).attr("y", d.y+3).attr "id", d.name
+			# ).on "mouseout", (d) =>
+			# 	d3.select("text").remove()
+
+			nodeEnter.append("svg:rect").attr("x", -50).attr("y", -12).attr("width",200).attr("height",24).style("fill", "url(#gradient)")
+			nodeEnter.append("text").text( (d) ->
+					d.name
+				)
+				.attr("x", -46)
+				.attr("y", 4)
+				.attr("fill","#fff").on "click", @clickNode
+
+			nodeEnter.transition().duration(@duration).attr("transform", (d) ->
+				"translate(" + d.y + "," + d.x + ")"
+			).style("opacity", 1).select("circle").style("fill", (d) ->
+				(if d.children then "#f66" else "#999")
+			)
+
+			node.transition().duration(@duration).attr("transform", (d) ->
+				"translate(" + d.y + "," + d.x + ")"
+			).style "opacity", 1
+
+			node.exit().transition().duration(@duration).attr("transform", (d) ->
+				"translate(" + source.y + "," + source.x + ")"
+			).style("opacity", 1e-6).remove()
+
+
 
 
 		# Update the links…
@@ -156,76 +218,6 @@ class App.Visualizer extends Exo.Spine.Controller
 			d.x0 = d.x
 			d.y0 = d.y
 
-	updateV: (source) =>
-		# Compute the new tree layout.
-		nodes = @tree.nodes(@rootNode).reverse()
-
-		# Update the nodes…
-		node = @vis.selectAll("g.node").data(nodes, (d) =>
-			d.id or (d.id = ++@i)
-		)
-		nodeEnter = node.enter().append("svg:g").attr("class", "node").attr("transform", (d) ->
-			"translate(" + source.y0 + "," + source.x0 + ")"
-		)
-
-		nodeEnter.append("svg:circle").attr("r", 4.5).style("fill", (d) ->
-			(if d._children then "lightsteelblue" else "#fff")
-		).on "click", @clickNode
-
-
-		nodeEnter.append("svg:text").attr("x", (d) ->
-			(if d._children then -8 else 8)
-		).attr("y", 3).text (d) ->
-			d.name
-
-
-		nodeEnter.transition().duration(@duration).attr("transform", (d) ->
-			"translate(" + d.y + "," + d.x + ")"
-		).style("opacity", 1).select("circle").style "fill", "lightsteelblue"
-		node.transition().duration(@duration).attr("transform", (d) ->
-			"translate(" + d.y + "," + d.x + ")"
-		).style "opacity", 1
-		node.exit().transition().duration(@duration).attr("transform", (d) ->
-			"translate(" + source.y + "," + source.x + ")"
-		).style("opacity", 1e-6).remove()
-
-
-		# Update the links…
-		link = @vis.selectAll("path.link").data(@tree.links(nodes), (d) ->
-			d.target.id
-		)
-
-		# Enter any new links at the parent's previous position.
-		link.enter().insert("svg:path", "g").attr("class", "link").attr("d", (d) =>
-			o =
-				x: source.x0
-				y: source.y0
-
-			@diagonal
-				source: o
-				target: o
-
-		).transition().duration(@duration).attr "d", @diagonal
-
-		# Transition links to their new position.
-		link.transition().duration(@duration).attr "d", @diagonal
-
-		# Transition exiting nodes to the parent's new position.
-		link.exit().transition().duration(@duration).attr("d", (d) =>
-			o =
-				x: source.x
-				y: source.y
-
-			@diagonal
-				source: o
-				target: o
-
-		).remove()
-
-		# Stash the old positions for transition.
-		nodes.forEach (d) ->
-			d.x0 = d.x
-			d.y0 = d.y
 
 	clickNode: (d) =>
 		if d.children
@@ -234,7 +226,7 @@ class App.Visualizer extends Exo.Spine.Controller
 		else
 			d.children = d._children
 			d._children = null
-		@updateFunc?(d)
+		@update d
 
 	# Toggle children.
 	toggleNode: (d) =>
