@@ -102,6 +102,18 @@ class App.Visualizer extends Exo.Spine.Controller
 			css:
 				left: w
 
+	customSpline: (d) ->
+		p = new Array()
+		p[0] = d.source.x + "," + d.source.y
+		p[3] = d.target.x + "," + d.target.y
+		m = (d.source.x + d.target.x) / 2
+		p[1] = m + "," + d.source.y
+		p[2] = m + "," + d.target.y
+
+		#This is to change the points where the spline is anchored
+		#from [source.right,target.left] to [source.top,target.bottom]
+		console.log "M" + p[0] + "C" + p[1] + " " + p[2] + " " + p[3]
+		"M" + p[0] + "C" + p[1] + " " + p[2] + " " + p[3]
 
 	update: (source) =>
 		# Compute the new tree layout.
@@ -116,19 +128,21 @@ class App.Visualizer extends Exo.Spine.Controller
 			nodeEnter = node.enter().append("svg:g").attr("class", "node").attr("transform", (d) ->
 				"translate(" + source.x0 + "," + source.y0 + ")"
 			)
-			# .on("mouseover", (d) =>
-			# 	d3.select("text").remove()
-			# 	d3.select("rect.bg").remove()
-			# 	@vis.append("text").text(d.name).attr("x", d.x+20).attr("y", d.y+5).attr("id", d.name).attr("fill","#fff")
-			# 	wi = parseInt(d3.select("text").style("width").split('px')[0]) + 8
-			# 	@vis.insert("svg:rect", "text").attr("x", d.x+16).attr("y", d.y-12).attr("width",wi).attr("height",24).style("fill", "url(#gradient)").attr("class","bg")
+			.on(	"click", @clickNode)
 
-			# )
-			# .on "mouseout", (d) =>
-			# 	d3.select("text").remove()
-			# 	d3.select("rect.bg").remove()
+			.on("mouseover", (d) =>
+				d3.select("text").remove()
+				d3.select("rect.bg").remove()
+				@vis.append("text").text(d.name).attr("x", d.x+20).attr("y", d.y+5).attr("id", d.name).attr("fill","#fff")
+				wi = parseInt(d3.select("text").style("width").split('px')[0]) + 8
+				@vis.insert("svg:rect", "text").attr("x", d.x+16).attr("y", d.y-12).attr("width",wi).attr("height",24).style("fill", "url(#gradient)").attr("class","bg")
 
-			nodeEnter.append("svg:circle").attr("r", 10).on "click", @clickNode
+			)
+			.on "mouseout", (d) =>
+				d3.select("text").remove()
+				d3.select("rect.bg").remove()
+
+			nodeEnter.append("svg:circle").attr("r", 10)
 
 
 			nodeEnter.transition().duration(@duration).attr("transform", (d) ->
@@ -149,12 +163,7 @@ class App.Visualizer extends Exo.Spine.Controller
 		else
 			nodeEnter = node.enter().append("svg:g").attr("class", "node").attr("transform", (d) ->
 				"translate(" + source.y0 + "," + source.x0 + ")"
-			)
-			# .on("mouseover", (d) =>
-			# 	d3.select("text").remove()
-			# 	@vis.append("text").text(d.name).attr("x", d.x+16).attr("y", d.y+3).attr "id", d.name
-			# ).on "mouseout", (d) =>
-			# 	d3.select("text").remove()
+			).on "click", @clickNode
 
 			nodeEnter.append("svg:rect").attr("x", -50).attr("y", -12).attr("width",200).attr("height",24).style("fill", "url(#gradient)")
 			nodeEnter.append("text").text( (d) ->
@@ -162,7 +171,7 @@ class App.Visualizer extends Exo.Spine.Controller
 				)
 				.attr("x", -46)
 				.attr("y", 4)
-				.attr("fill","#fff").on "click", @clickNode
+				.attr("fill","#fff")
 
 			nodeEnter.transition().duration(@duration).attr("transform", (d) ->
 				"translate(" + d.y + "," + d.x + ")"
@@ -187,16 +196,20 @@ class App.Visualizer extends Exo.Spine.Controller
 		)
 
 		# Enter any new links at the parent's previous position.
-		link.enter().insert("svg:path", "g").attr("class", "link").attr("d", (d) =>
-			o =
-				x: source.x0
-				y: source.y0
+		link.enter().insert("svg:path", "g").attr("class", "link")
 
-			@diagonal
-				source: o
-				target: o
+			.attr("d", @customSpline)
+			# .attr("d", (d) =>
+			# 	o =
+			# 		x: source.x0
+			# 		y: source.y0
 
-		).transition().duration(@duration).attr "d", @diagonal
+			# 	@diagonal
+			# 		source: o
+			# 		target: o
+
+			# )
+			.transition().duration(@duration).attr "d", @diagonal
 
 		# Transition links to their new position.
 		link.transition().duration(@duration).attr "d", @diagonal
