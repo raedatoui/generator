@@ -74,15 +74,16 @@ class App.Visualizer extends Exo.Spine.Controller
 		h = $(window).height()
 		@el.width w
 		@el.height h
+		d3.select("svg").attr("width", w).attr("height", h)
 		@vis.attr("width", w).attr("height", h)
 
 		if mode is "h"
-			@tree = d3.layout.tree().size([w-160, h-160])
+			@tree = d3.layout.tree().size([w-40, h-80])
 			@diagonal = d3.svg.diagonal().projection((d) ->
 				[d.x, d.y]
 			)
 		else
-			@tree = d3.layout.tree().size([h-160, w - 160])
+			@tree = d3.layout.tree().size([h-40, w-240])
 			@diagonal = d3.svg.diagonal().projection((d) ->
 				[d.y, d.x]
 			)
@@ -102,18 +103,19 @@ class App.Visualizer extends Exo.Spine.Controller
 			css:
 				left: w
 
-	customSpline: (d) ->
-		p = new Array()
-		p[0] = d.source.x + "," + d.source.y
-		p[3] = d.target.x + "," + d.target.y
-		m = (d.source.x + d.target.x) / 2
-		p[1] = m + "," + d.source.y
-		p[2] = m + "," + d.target.y
+	# customSpline: (d) ->
+	# 	p = new Array()
+	# 	p[0] = d.source.x + "," + d.source.y
+	# 	p[3] = d.target.x + "," + d.target.y
+	# 	m = (d.source.x + d.target.x) / 2
+	# 	p[1] = m + "," + d.source.y
+	# 	p[2] = m + "," + d.target.y
 
-		#This is to change the points where the spline is anchored
-		#from [source.right,target.left] to [source.top,target.bottom]
-		console.log "M" + p[0] + "C" + p[1] + " " + p[2] + " " + p[3]
-		"M" + p[0] + "C" + p[1] + " " + p[2] + " " + p[3]
+	# 	#This is to change the points where the spline is anchored
+	# 	#from [source.right,target.left] to [source.top,target.bottom]
+	# 	console.log "M" + p[0] + "C" + p[1] + " " + p[2] + " " + p[3]
+	# 	"M" + p[0] + "C" + p[1] + " " + p[2] + " " + p[3]
+	# 	"M" + p[0] + "C" + p[1] + " " + p[2] + " " + p[3]
 
 	update: (source) =>
 		# Compute the new tree layout.
@@ -122,13 +124,15 @@ class App.Visualizer extends Exo.Spine.Controller
 		node = @vis.selectAll("g.node").data(nodes, (d) =>
 			d.id or (d.id = ++@i)
 		)
-
-		console.log @layoutMode
 		if @layoutMode is "h"
+			@vis.select("g.node").append("svg:circle").attr("fill", "#FC2B2B").attr("r", 10)
+			@vis.select("g.node rect").remove()
+			@vis.select("g.node text").remove()
+
 			nodeEnter = node.enter().append("svg:g").attr("class", "node").attr("transform", (d) ->
 				"translate(" + source.x0 + "," + source.y0 + ")"
 			)
-			.on(	"click", @clickNode)
+			.on("click", @clickNode)
 
 			.on("mouseover", (d) =>
 				d3.select("text").remove()
@@ -144,13 +148,11 @@ class App.Visualizer extends Exo.Spine.Controller
 
 			nodeEnter.append("svg:circle").attr("r", 10)
 
-
 			nodeEnter.transition().duration(@duration).attr("transform", (d) ->
 				"translate(" + d.x + "," + d.y + ")"
 			).style("opacity", 1).select("circle").style("fill", (d) ->
 				(if d.children then "#FC2B2B" else "#767676")
 			)
-
 
 			node.transition().duration(@duration).attr("transform", (d) ->
 				"translate(" + d.x + "," + d.y + ")"
@@ -161,7 +163,7 @@ class App.Visualizer extends Exo.Spine.Controller
 			).style("opacity", 1e-6).remove()
 
 		else
-			nodeEnter = node.enter().append("svg:g").attr("class", "node").attr("transform", (d) ->
+			nodeEnter = node.enter().append("svg:g").attr("class", "node").attr("width",200).attr("height",24).attr("transform", (d) ->
 				"translate(" + source.y0 + "," + source.x0 + ")"
 			).on "click", @clickNode
 
@@ -187,8 +189,12 @@ class App.Visualizer extends Exo.Spine.Controller
 				"translate(" + source.y + "," + source.x + ")"
 			).style("opacity", 1e-6).remove()
 
-
-
+			@vis.select("g.node circle").remove()
+			@vis.select("g.node").append("svg:rect").attr("x", -20).attr("y", -12).attr("width",200).attr("height",24).style("fill", "url(#gradient)")
+			@vis.select("g.node").append("text").text(@rootNode.name)
+				.attr("x", -16)
+				.attr("y", 4)
+				.attr("fill","#fff")
 
 		# Update the links…
 		link = @vis.selectAll("path.link").data(@tree.links(nodes), (d) ->
@@ -197,18 +203,16 @@ class App.Visualizer extends Exo.Spine.Controller
 
 		# Enter any new links at the parent's previous position.
 		link.enter().insert("svg:path", "g").attr("class", "link")
+			.attr("d", (d) =>
+				o =
+					x: source.x0
+					y: source.y0
 
-			.attr("d", @customSpline)
-			# .attr("d", (d) =>
-			# 	o =
-			# 		x: source.x0
-			# 		y: source.y0
+				@diagonal
+					source: o
+					target: o
 
-			# 	@diagonal
-			# 		source: o
-			# 		target: o
-
-			# )
+			)
 			.transition().duration(@duration).attr "d", @diagonal
 
 		# Transition links to their new position.

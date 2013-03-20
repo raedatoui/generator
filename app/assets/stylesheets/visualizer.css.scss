@@ -50,11 +50,5 @@
 .link {
 	fill: none;
 	stroke: #666;
-	stroke-width: 2px;
-}
-
-.label{
-	font-size: 11px;
-	@include linear-gradient(#242424,#000000);
-	color: #fff;
+	stroke-width: 0.5px;
 }
