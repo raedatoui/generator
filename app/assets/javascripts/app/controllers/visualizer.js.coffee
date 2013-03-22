@@ -122,12 +122,14 @@ class App.Visualizer extends Exo.Spine.Controller
 		nodes = @tree.nodes(@rootNode).reverse()
 		# Update the nodes…
 		node = @vis.selectAll("g.node").data(nodes, (d) =>
+			if d.depth == 1 and d.y*0.25 > 35
+				d.y = d.y*0.25
 			d.id or (d.id = ++@i)
 		)
 		if @layoutMode is "h"
-			@vis.select("g.node").append("svg:circle").attr("fill", "#FC2B2B").attr("r", 10)
-			@vis.select("g.node rect").remove()
-			@vis.select("g.node text").remove()
+			# @vis.select("g.node").append("svg:circle").attr("fill", "#FC2B2B").attr("r", 10)
+			# @vis.select("g.node rect").remove()
+			# @vis.select("g.node text").remove()
 
 			nodeEnter = node.enter().append("svg:g").attr("class", "node").attr("transform", (d) ->
 				"translate(" + source.x0 + "," + source.y0 + ")"
@@ -135,6 +137,7 @@ class App.Visualizer extends Exo.Spine.Controller
 			.on("click", @clickNode)
 
 			.on("mouseover", (d) =>
+				console.log "wtf!!!", d
 				d3.select("text").remove()
 				d3.select("rect.bg").remove()
 				@vis.append("text").text(d.name).attr("x", d.x+20).attr("y", d.y+5).attr("id", d.name).attr("fill","#fff")
@@ -146,7 +149,10 @@ class App.Visualizer extends Exo.Spine.Controller
 				d3.select("text").remove()
 				d3.select("rect.bg").remove()
 
-			nodeEnter.append("svg:circle").attr("r", 10)
+
+			nodeEnter.append("svg:circle").attr("r", (d) ->
+				if d.depth is 0 then 2 else 10
+			)
 
 			nodeEnter.transition().duration(@duration).attr("transform", (d) ->
 				"translate(" + d.x + "," + d.y + ")"
@@ -163,12 +169,25 @@ class App.Visualizer extends Exo.Spine.Controller
 			).style("opacity", 1e-6).remove()
 
 		else
-			nodeEnter = node.enter().append("svg:g").attr("class", "node").attr("width",200).attr("height",24).attr("transform", (d) ->
-				"translate(" + source.y0 + "," + source.x0 + ")"
-			).on "click", @clickNode
+			node.on("mouseover",null)
+			nodeEnter = node.enter().append("svg:g")
+				.attr("class", "node")
+				.attr("width",200).attr("height",24)
+				.attr("transform", (d) ->
+					"translate(" + source.y0 + "," + source.x0 + ")"
+				)
+				.on("click", @clickNode)
 
-			nodeEnter.append("svg:rect").attr("x", -50).attr("y", -12).attr("width",200).attr("height",24).style("fill", "url(#gradient)")
-			nodeEnter.append("text").text( (d) ->
+
+			nodeEnter.append("svg:rect")
+				.attr("x", -50)
+				.attr("y", -12)
+				.attr("width",200)
+				.attr("height",24).
+				style("fill", "url(#gradient)")
+
+			nodeEnter.append("text")
+				.text( (d) ->
 					d.name
 				)
 				.attr("x", -46)
@@ -185,16 +204,16 @@ class App.Visualizer extends Exo.Spine.Controller
 				"translate(" + d.y + "," + d.x + ")"
 			).style "opacity", 1
 
-			node.exit().transition().duration(@duration).attr("transform", (d) ->
+			node.exit().on("mouseover",null).transition().duration(@duration).attr("transform", (d) ->
 				"translate(" + source.y + "," + source.x + ")"
 			).style("opacity", 1e-6).remove()
 
-			@vis.select("g.node circle").remove()
-			@vis.select("g.node").append("svg:rect").attr("x", -20).attr("y", -12).attr("width",200).attr("height",24).style("fill", "url(#gradient)")
-			@vis.select("g.node").append("text").text(@rootNode.name)
-				.attr("x", -16)
-				.attr("y", 4)
-				.attr("fill","#fff")
+			@vis.select("g.node").on("mouseover",null)
+			# @vis.select("g.node").append("svg:rect").attr("x", -20).attr("y", -12).attr("width",200).attr("height",24).style("fill", "url(#gradient)")
+			# @vis.select("g.node").append("text").text(@rootNode.name)
+			# 	.attr("x", -16)
+			# 	.attr("y", 4)
+			# 	.attr("fill","#fff")
 
 		# Update the links…
 		link = @vis.selectAll("path.link").data(@tree.links(nodes), (d) ->
