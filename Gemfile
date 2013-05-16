@@ -29,7 +29,7 @@ gem "coffee-rails", :group => :development
 gem "uglifier", :group => :development
 gem "compass-rails", :group => :assets
 gem "compass"
-
+gem "exojs"
 gem 'spine-rails'
 gem 'eco'
 gem 'ruby-haml-js'

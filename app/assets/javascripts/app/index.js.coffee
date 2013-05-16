@@ -6,8 +6,8 @@
 #= require spine/route
 
 #= require jquery_ujs
-#= require exo/exo
-#= require exo/spine.exo
+#= require exo
+#= require exo.spine
 #= require TweenMax.min
 #= require spectrum
 #= require hamlcoffee
