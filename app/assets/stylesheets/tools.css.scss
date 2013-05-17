@@ -8,7 +8,7 @@ $gutter: 20px;
 $white: #ededed;
 $bg: #222;
 
-#tools {
+.tools {
 	background-color: $bg;
 	height: 100%;
 	float: left;
@@ -170,28 +170,30 @@ $bg: #222;
 			height: 20px;
 		}
 	}
+
 }
-	.sp-replacer {
-		background-color: $bg !important;
-		@include border-radius(5px);
-		border: solid 2px $gray !important;
-		height: 16px;
+
+.sp-replacer {
+	background-color: $bg !important;
+	@include border-radius(5px);
+	border: solid 2px $gray !important;
+	height: 16px;
+	color: $white;
+	padding: 0;
+	width: 190px;
+	&:hover {
+		background-color: $dark !important;
 		color: $white;
-		padding: 0;
-		width: 190px;
-		&:hover {
-			background-color: $dark !important;
-			color: $white;
-		}
-		.sp-preview {
-			height: 16px;
-			border: none;
-			width: 170px;
-			.sp-preview-inner {
-				width: 100%;
-			}
+	}
+	.sp-preview {
+		height: 16px;
+		border: none;
+		width: 170px;
+		.sp-preview-inner {
+			width: 100%;
 		}
 	}
+}
 
 .sp-container, .sp-palette, .sp-picker-container {
 	color: $white !important;

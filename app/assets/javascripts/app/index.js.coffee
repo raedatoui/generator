@@ -12,6 +12,7 @@
 #= require spectrum
 #= require hamlcoffee
 #= require d3.min
+#= require jquery.form.js
 
 #= require_tree ./lib
 #= require_self
@@ -33,6 +34,8 @@ class App extends Spine.Controller
 	layersLoaded: =>
 		@visualizer = new App.Visualizer
 		@append @visualizer
+		@visualizer.bind "nodeSelected", (data) =>
+			@tools.showNode data
 
 		@tools = new App.Tools
 		@append @tools

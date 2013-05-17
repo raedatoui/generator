@@ -1,4 +1,4 @@
-class App.AddLayerTypes extends Spine.Controller
+class App.LayerTypeSelector extends Spine.Controller
 
 	className: "layer-type"
 
@@ -9,6 +9,7 @@ class App.AddLayerTypes extends Spine.Controller
 
 	elements:
 		".button" : "button"
+
 	constructor: ->
 		super
 		throw '@item required' unless @item
@@ -21,7 +22,6 @@ class App.AddLayerTypes extends Spine.Controller
 		# 		autoAlpha: 1
 		# 	delay: 0.1*@item.id
 		#@el.attr "style", "background-image:url("+ @item.icon.url + ")"
-
 
 	handleClick: =>
 		$(".layer-type .button").removeClass "selected"

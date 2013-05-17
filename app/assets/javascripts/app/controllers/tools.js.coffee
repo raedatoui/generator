@@ -1,10 +1,13 @@
 class App.Tools extends Exo.Spine.Controller
 
+	className: "tools"
+
 	elements:
 		".bar" : "bar"
 		".toggle" : "toggleBtn"
 		".actions" : "actionsPanel"
 		"#add" : "addButton"
+		"#info" : "infoButton"
 
 	events:
 		"click .bar": "togglePanel"
@@ -16,7 +19,7 @@ class App.Tools extends Exo.Spine.Controller
 	constructor: ->
 		super
 			initialState: Exo.Node.States.ACTIVATED
-		@el.attr "id", "tools"
+
 		panelClosed = true
 		@render()
 
@@ -42,11 +45,36 @@ class App.Tools extends Exo.Spine.Controller
 					@toggleBtn.removeClass("ui-bar-closed").addClass("ui-bar-open")
 
 	showAdd: =>
-		@addController = new App.AddLayers
-		@addController.appendTo @actionsPanel
-		@addChild @addController
-		@addController.bind "closed", @selectionMade
-		@addButton.addClass "selected"
+		console.log @current
+		if @current is undefined or @current.constructor.name != "LayerCreator"
+			creator = new App.LayerCreator
+			creator.bind "closed", @selectionMade
+			@activateNext creator
+			@addButton.addClass "selected"
 
 	selectionMade: =>
 		@addButton.removeClass "selected"
+
+	showNode: (data) =>
+		if panelClosed
+			@togglePanel()
+		$('.button').removeClass
+		@infoButton.addClass "selected"
+		props = new App.PropsEditor
+
+	activateNext: (next) ->
+		unless @next
+			@next = next
+			@addChild @next											# Add the section to the controller hierarchy
+			@next.bind "onDeactivated", @onControllerDeactivated	# Get notified when the controller is deactivated
+			@next.bind "onActivated", @onControllerActivated		# and activated.
+			@next.appendTo @actionsPanel										# Also append it's @el to the DOM.
+			@next.activate()										# Attempt to activate the section.
+
+	onControllerActivated: (controller) =>
+		@current = controller
+		@next = null
+
+	onControllerDeactivated: (controller) =>
+		@removeChild controller
+		controller.release()

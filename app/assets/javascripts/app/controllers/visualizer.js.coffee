@@ -4,6 +4,7 @@ class App.Visualizer extends Exo.Spine.Controller
 
 	events:
 		"click #rotate" : "toggleLayout"
+
 	constructor: ->
 		super
 		@el.attr "id", "mCanvas"
@@ -30,7 +31,7 @@ class App.Visualizer extends Exo.Spine.Controller
 		@i = 0
 		@duration = 500
 		@vis = d3.select("#mCanvas").append("svg:svg").attr("width", w).attr("height", h).append("svg:g").attr("transform", "translate(40,40)")
-		d3.json "flare.json", (json) =>
+		d3.json "/layers.json", (json) =>
 			console.log json
 			json.x0 = 800
 			json.y0 = 0
@@ -49,7 +50,6 @@ class App.Visualizer extends Exo.Spine.Controller
 		gradient.append("svg:stop").attr("offset", "100%").attr("stop-color", "#000").attr "stop-opacity", 1
 
 		$(window).resize @debounce
-
 
 	debounce: =>
 		timeoutID = -1
@@ -93,7 +93,6 @@ class App.Visualizer extends Exo.Spine.Controller
 			, @duration*2
 		else
 			@update @rootNode
-
 
 	slide: (w) =>
 		console.log w
@@ -254,8 +253,8 @@ class App.Visualizer extends Exo.Spine.Controller
 			d.x0 = d.x
 			d.y0 = d.y
 
-
 	clickNode: (d) =>
+		@trigger "nodeSelected", d
 		if d.children
 			d._children = d.children
 			d.children = null
@@ -264,7 +263,6 @@ class App.Visualizer extends Exo.Spine.Controller
 			d._children = null
 		@update d
 
-	# Toggle children.
 	toggleNode: (d) =>
 		if d.children
 			d._children = d.children

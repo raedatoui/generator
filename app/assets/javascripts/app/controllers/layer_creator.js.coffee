@@ -1,4 +1,4 @@
-class App.AddLayers extends Exo.Spine.Controller
+class App.LayerCreator extends Exo.Spine.Controller
 
 	className: "add-layers"
 
@@ -7,13 +7,11 @@ class App.AddLayers extends Exo.Spine.Controller
 
 	constructor: ->
 		super
-			initialState: Exo.Node.States.ACTIVATED
 		panelClosed = true
-		@render()
 
 	render: =>
 		for type in App.LayerType.all()
-			btn = new App.AddLayerTypes(item:type)
+			btn = new App.LayerTypeSelector(item:type)
 			@append btn
 			btn.bind "selected", @handleSelection
 			btn.bind "mouseover", (item) =>
@@ -29,6 +27,7 @@ class App.AddLayers extends Exo.Spine.Controller
 
 	doActivate: ->
 		@onActivated()
+		@render()
 
 	doDeactivate: ->
 		TweenLite.to @el, 0.75,
@@ -41,7 +40,6 @@ class App.AddLayers extends Exo.Spine.Controller
 	handleSelection: (item) =>
 		@currentEditorData = item
 		@activateNext new App.PropsEditor
-
 
 	activateNext: (next) ->
 		unless @next

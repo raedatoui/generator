@@ -6,8 +6,19 @@ ActiveRecord::Base.connection.execute("TRUNCATE TABLE layer_types;")
 Layer.delete_all
 ActiveRecord::Base.connection.execute("TRUNCATE TABLE layers;")
 
-[ "single","repeat","box"].each do |type|
-	LayerType.create! :name => type
+AdminUser.delete_all
+ActiveRecord::Base.connection.execute("TRUNCATE TABLE admin_users;")
+
+user = AdminUser.find_or_create_by_email 'admin@gencell.dev' do |u|
+  u.password = 'password'
+  u.password_confirmation = 'password'
+  u.name = 'Admin User'
+end
+
+["single","repeat","box", "color"].each do |type|
+	layer_type = LayerType.create! :name => type.titleize, :slug => type
+	layer_type.icon.store! (File.open(File.join(Rails.root, "db/seed/layer_type/#{type}.png")))
+	layer_type.save!
 end
 
 @file = "#{Rails.root}/db/externe.xml"

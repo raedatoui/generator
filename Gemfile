@@ -45,5 +45,3 @@ gem 'whenever'
 gem "ancestry"
 
 gem "activeadmin"
-
-gem "activeadmin"
