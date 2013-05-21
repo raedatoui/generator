@@ -3,3 +3,5 @@ class App.LayerType extends Spine.Model
   @extend Spine.Model.Ajax
 
   @url = "/types"
+
+  @hasMany 'layers', 'App.Layer'

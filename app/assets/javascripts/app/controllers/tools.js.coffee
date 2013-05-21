@@ -11,7 +11,7 @@ class App.Tools extends Exo.Spine.Controller
 
 	events:
 		"click .bar": "togglePanel"
-		"click #add" : "showAdd"
+		"click #add" : "showCreator"
 
 	panelClosed = true
 	# select, info / props - update, add, delete
@@ -28,7 +28,7 @@ class App.Tools extends Exo.Spine.Controller
 
 	togglePanel: =>
 		if panelClosed
-			@trigger "moved", @el.width() - @bar.width()
+			@trigger "moved", 342
 			TweenLite.to @el, .5,
 				css:
 					left: 0
@@ -44,23 +44,30 @@ class App.Tools extends Exo.Spine.Controller
 					panelClosed = true
 					@toggleBtn.removeClass("ui-bar-closed").addClass("ui-bar-open")
 
-	showAdd: =>
-		console.log @current
+	showCreator: =>
+		$('.button').removeClass "selected"
 		if @current is undefined or @current.constructor.name != "LayerCreator"
 			creator = new App.LayerCreator
 			creator.bind "closed", @selectionMade
 			@activateNext creator
 			@addButton.addClass "selected"
 
-	selectionMade: =>
-		@addButton.removeClass "selected"
-
-	showNode: (data) =>
+	showInfo: (data) =>
+		console.log data
 		if panelClosed
 			@togglePanel()
-		$('.button').removeClass
+		$('.button').removeClass "selected"
 		@infoButton.addClass "selected"
-		props = new App.PropsEditor
+
+		App.Layer.currentLayer = App.Layer.find(data.id)
+		if @current && @current.constructor.name  is "LayerInfo"
+			@current.prepareWithModel App.Layer.currentLayer
+		else
+			props = new App.LayerInfo
+			@activateNext props
+
+	selectionMade: =>
+		@addButton.removeClass "selected"
 
 	activateNext: (next) ->
 		unless @next
@@ -74,6 +81,8 @@ class App.Tools extends Exo.Spine.Controller
 	onControllerActivated: (controller) =>
 		@current = controller
 		@next = null
+		if @current.constructor.name is "LayerInfo"
+			@current.prepareWithModel App.Layer.currentLayer
 
 	onControllerDeactivated: (controller) =>
 		@removeChild controller

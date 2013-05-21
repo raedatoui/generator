@@ -1,4 +1,4 @@
-class App.LayerTypeSelector extends Spine.Controller
+class App.LayerTypeButton extends Spine.Controller
 
 	className: "layer-type"
 
@@ -16,7 +16,7 @@ class App.LayerTypeSelector extends Spine.Controller
 		@render()
 
 	render: =>
-		@html @view("add_layer_type",@item)
+		@html @view("layer_type_button",@item)
 		# TweenLite.to @el, 1,
 		# 	css:
 		# 		autoAlpha: 1

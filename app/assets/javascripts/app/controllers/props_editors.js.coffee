@@ -14,13 +14,14 @@ class App.PropsEditor extends Exo.Spine.Controller
 		'#subBtn' : "submitBtn"
 
 	prepareWithModel: (item) =>
+		@el.empty()
 		@item = item
 		@render()
 		# $("form input").live "change", ->
 		# 	$(this).parents("form:first").submit()
 
 	render: =>
-		@html @view(@item.slug+"_editor",@item)
+		@html @view("editors/#{@item.slug}_editor",@item)
 		setTimeout =>
 			@keep_rendering()
 		, 250

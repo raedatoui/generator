@@ -1,0 +1,4 @@
+- url = "background-image:url(#{@layer_type().icon.url})"
+.button.small
+	.icon{:style => url}
+%h1= @name

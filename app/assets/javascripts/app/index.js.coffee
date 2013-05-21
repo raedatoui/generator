@@ -4,6 +4,7 @@
 #= require spine/manager
 #= require spine/ajax
 #= require spine/route
+#= require spine/relation
 
 #= require jquery_ujs
 #= require exo
@@ -35,7 +36,7 @@ class App extends Spine.Controller
 		@visualizer = new App.Visualizer
 		@append @visualizer
 		@visualizer.bind "nodeSelected", (data) =>
-			@tools.showNode data
+			@tools.showInfo data
 
 		@tools = new App.Tools
 		@append @tools

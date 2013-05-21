@@ -8,6 +8,11 @@ class LayersController < ApplicationController
   end
 
   def index
+    @layers = Layer.find(:all, :conditions => ["ancestry is not ?", nil])
+    respond_with @layers
+  end
+
+  def nested
     root = Layer.find(:first, :conditions => ["ancestry is ?", nil])
     respond_with root.to_node
   end

@@ -31,8 +31,7 @@ class App.Visualizer extends Exo.Spine.Controller
 		@i = 0
 		@duration = 500
 		@vis = d3.select("#mCanvas").append("svg:svg").attr("width", w).attr("height", h).append("svg:g").attr("transform", "translate(40,40)")
-		d3.json "/layers.json", (json) =>
-			console.log json
+		d3.json "/nested.json", (json) =>
 			json.x0 = 800
 			json.y0 = 0
 			@rootNode = json
@@ -95,7 +94,6 @@ class App.Visualizer extends Exo.Spine.Controller
 			@update @rootNode
 
 	slide: (w) =>
-		console.log w
 		@offset = w
 		@setLayoutMode @layoutMode
 		TweenLite.to @el, .5,
@@ -136,7 +134,6 @@ class App.Visualizer extends Exo.Spine.Controller
 			.on("click", @clickNode)
 
 			.on("mouseover", (d) =>
-				console.log "wtf!!!", d
 				d3.select("text").remove()
 				d3.select("rect.bg").remove()
 				@vis.append("text").text(d.name).attr("x", d.x+20).attr("y", d.y+5).attr("id", d.name).attr("fill","#fff")
@@ -254,7 +251,8 @@ class App.Visualizer extends Exo.Spine.Controller
 			d.y0 = d.y
 
 	clickNode: (d) =>
-		@trigger "nodeSelected", d
+		if d.name != "root"
+			@trigger "nodeSelected", d
 		if d.children
 			d._children = d.children
 			d.children = null

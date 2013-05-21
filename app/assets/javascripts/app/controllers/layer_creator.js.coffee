@@ -11,7 +11,7 @@ class App.LayerCreator extends Exo.Spine.Controller
 
 	render: =>
 		for type in App.LayerType.all()
-			btn = new App.LayerTypeSelector(item:type)
+			btn = new App.LayerTypeButton(item:type)
 			@append btn
 			btn.bind "selected", @handleSelection
 			btn.bind "mouseover", (item) =>

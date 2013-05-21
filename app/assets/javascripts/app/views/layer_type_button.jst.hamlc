@@ -1,6 +1,6 @@
 - url = "background-image:url(" +  @icon.url + ")"
 - console.log url
-.button
+.button.small
 	.icon{:style => url}
 
 / .label= @name
