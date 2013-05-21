@@ -23,6 +23,10 @@ class App.Visualizer extends Exo.Spine.Controller
 			@keep_rendering()
 		, 250
 
+		Spine.bind "dataAdded", (data) =>
+			@rootNode.children.push data
+			@debounce()
+
 	keep_rendering: =>
 		@offset = 20
 		@layoutMode = 'h'
@@ -32,6 +36,7 @@ class App.Visualizer extends Exo.Spine.Controller
 		@duration = 500
 		@vis = d3.select("#mCanvas").append("svg:svg").attr("width", w).attr("height", h).append("svg:g").attr("transform", "translate(40,40)")
 		d3.json "/nested.json", (json) =>
+			@json_data = json
 			json.x0 = 800
 			json.y0 = 0
 			@rootNode = json

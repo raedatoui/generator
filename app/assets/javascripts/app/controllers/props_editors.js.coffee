@@ -50,6 +50,7 @@ class App.PropsEditor extends Exo.Spine.Controller
 				attr = JSON.parse xhr.responseText
 				# layer.updateAttributes attr
 				console.log layer,attr
+				Spine.trigger "dataAdded", attr
 				#layer.save()
 
 	doActivate: ->
