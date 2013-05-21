@@ -1,4 +1,4 @@
-%h2 Repeat Layer
+%h2 Box Layer
 
 %form#new_layer.new_layer{ :accept-charset => "UTF-8", :action => "/layers", :enctype => "multipart/form-data", :method => "post", :data-type => "json"}
 	%input{:name => "layer[layer_type_id]", :type => "hidden", :value => @id}
@@ -6,14 +6,6 @@
 		%li
 			%span.label name
 			%input{ :name => "layer[name]"}}
-
-		%li
-			%span.label Width
-			%input{:type => 'number', :name => "layer[layer_width]", :id => 'lw'}
-
-		%li
-			%span.label Height
-			%input{:type => 'number', :name => "layer[layer_height]", :id => "lh"}
 
 		%li
 			%span.label alpha
@@ -34,12 +26,8 @@
 				%option{:value => "screen"} Screen
 				%option{:value => "screen"} Multiply
 
-		%li
-			%span.label file
-			%input{:name => "layer[file]", :type => "file"}
-
 		%li.btns
-			%input{:id=> "subBtn", :name => "commit", :type => "submit", :value => "Create Repeat Layer"}
+			%input{:id=> "subBtn", :name => "commit", :type => "submit", :value => "Create Box Layer"}
 			%input{:id => "cancel", :type => "button", :value => "Cancel"}
 
 		%span.percent

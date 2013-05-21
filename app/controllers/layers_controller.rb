@@ -1,4 +1,4 @@
-class LayersController < ApplicationController
+class LayersController <  InheritedResources::Base
 
   respond_to :js, :json
 
