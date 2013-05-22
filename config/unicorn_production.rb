@@ -1,5 +1,5 @@
 rails_env = ENV['RAILS_ENV']
-RAILS_ROOT = "/srv/generator.raedatoui.com/app/current"
+RAILS_ROOT = "/srv/www/generator.raedatoui.com/app/current"
 
 # 16 workers and 1 master
 worker_processes 3
