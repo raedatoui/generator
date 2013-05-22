@@ -6,6 +6,7 @@
 #= require spine/route
 #= require spine/relation
 
+#= require modernizr-2.6.2.min
 #= require jquery_ujs
 #= require exo
 #= require exo.spine
