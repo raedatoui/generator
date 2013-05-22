@@ -34,6 +34,8 @@ gem 'spine-rails'
 gem 'eco'
 gem 'ruby-haml-js'
 
+gem 'd3_rails'
+
 gem "carrierwave"
 gem "rmagick"
 

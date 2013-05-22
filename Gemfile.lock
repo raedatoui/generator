@@ -79,6 +79,8 @@ GEM
     compass-rails (1.0.3)
       compass (>= 0.12.2, < 0.14)
     configuration (1.3.2)
+    d3_rails (3.1.6)
+      railties (>= 3.1.0)
     devise (2.2.3)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -248,6 +250,7 @@ DEPENDENCIES
   coffee-rails
   compass
   compass-rails
+  d3_rails
   eco
   execjs
   exojs

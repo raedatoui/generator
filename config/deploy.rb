@@ -43,7 +43,6 @@ namespace :deploy do
     update_code
     bundle.install
     db.migrate
-    trails.update
     assets.compile
     unicorn.reload
   end
@@ -89,13 +88,6 @@ namespace :db do
   desc "Migrate"
   task :migrate do
     run "cd #{current_path} && /usr/bin/env rake db:migrate RAILS_ENV=#{stage}"
-  end
-end
-
-namespace :trails do
-  desc "Update"
-  task :update do
-    run "cd #{current_path} && /usr/bin/env rake trails:encode_json trails:encode_csv RAILS_ENV=#{stage}"
   end
 end
 
