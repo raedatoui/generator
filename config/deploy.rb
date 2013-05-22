@@ -11,12 +11,12 @@ set :unicorn_pid, Proc.new { "#{current_path}/tmp/pids/unicorn.pid" }
 
 ssh_options[:keys] = [File.join(ENV["HOME"], ".ssh", "id_rsa")]
 
-set :repository,  "git@github.com:raedatoui/graph_composer.git"
+set :repository,  "git@github.com:raedatoui/generator.git"
 set :scm, :git
 set :deploy_via, :remote_cache
 
 #RVM
-set :rvm_ruby_string, Proc.new { "1.9.3@nv" }       # Or whatever env you want it to run in.
+set :rvm_ruby_string, Proc.new { "2.0.0@generator" }       # Or whatever env you want it to run in.
 set :rvm_type, :user
 
 ## Branching ##
