@@ -6,7 +6,7 @@ gem "unicorn"
 gem "therubyracer"
 gem "inherited_resources"
 
-
+gem "rvm-capistrano"
 gem "capistrano"
 gem "capistrano-ext"
 gem "capistrano_colors"
