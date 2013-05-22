@@ -39,7 +39,7 @@
 			%input{:name => "layer[file]", :type => "file"}
 
 		%li.btns
-			%input{:id=> "subBtn", :name => "commit", :type => "submit", :value => "Create Color Layer"}
+			%input{:id=> "subBtn", :name => "commit", :type => "submit", :value => "Create Single Layer"}
 			%input{:id => "cancel", :type => "button", :value => "Cancel"}
 
 		%span.percent

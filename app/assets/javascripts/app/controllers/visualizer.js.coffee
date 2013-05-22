@@ -23,6 +23,10 @@ class App.Visualizer extends Exo.Spine.Controller
 			@keep_rendering()
 		, 250
 
+		Spine.bind "dataAdded", (data) =>
+			@rootNode.children.push data
+			@debounce()
+
 	keep_rendering: =>
 		@offset = 20
 		@layoutMode = 'h'
@@ -32,6 +36,7 @@ class App.Visualizer extends Exo.Spine.Controller
 		@duration = 500
 		@vis = d3.select("#mCanvas").append("svg:svg").attr("width", w).attr("height", h).append("svg:g").attr("transform", "translate(40,40)")
 		d3.json "/nested.json", (json) =>
+			@json_data = json
 			json.x0 = 800
 			json.y0 = 0
 			@rootNode = json
@@ -68,6 +73,7 @@ class App.Visualizer extends Exo.Spine.Controller
 		if @layoutMode != mode
 			delay = true
 			@clickNode @rootNode
+
 		@layoutMode = mode
 		w = $(window).width() - @offset
 		h = $(window).height()
@@ -100,27 +106,13 @@ class App.Visualizer extends Exo.Spine.Controller
 			css:
 				left: w
 
-	# customSpline: (d) ->
-	# 	p = new Array()
-	# 	p[0] = d.source.x + "," + d.source.y
-	# 	p[3] = d.target.x + "," + d.target.y
-	# 	m = (d.source.x + d.target.x) / 2
-	# 	p[1] = m + "," + d.source.y
-	# 	p[2] = m + "," + d.target.y
-
-	# 	#This is to change the points where the spline is anchored
-	# 	#from [source.right,target.left] to [source.top,target.bottom]
-	# 	console.log "M" + p[0] + "C" + p[1] + " " + p[2] + " " + p[3]
-	# 	"M" + p[0] + "C" + p[1] + " " + p[2] + " " + p[3]
-	# 	"M" + p[0] + "C" + p[1] + " " + p[2] + " " + p[3]
-
 	update: (source) =>
 		# Compute the new tree layout.
 		nodes = @tree.nodes(@rootNode).reverse()
 		# Update the nodes…
 		node = @vis.selectAll("g.node").data(nodes, (d) =>
-			if d.depth == 1 and d.y*0.25 > 35
-				d.y = d.y*0.25
+			# if d.depth == 1
+			# 	d.y = d.y*0.5
 			d.id or (d.id = ++@i)
 		)
 		if @layoutMode is "h"
@@ -128,44 +120,60 @@ class App.Visualizer extends Exo.Spine.Controller
 			# @vis.select("g.node rect").remove()
 			# @vis.select("g.node text").remove()
 
-			nodeEnter = node.enter().append("svg:g").attr("class", "node").attr("transform", (d) ->
-				"translate(" + source.x0 + "," + source.y0 + ")"
+			nodeEnter = node.enter().append("svg:g")
+				.attr("class", "node")
+				.attr("transform", (d) ->
+					"translate(" + source.x0 + "," + source.y0 + ")"
+				)
+
+				.on("click", @clickNode)
+
+				.on("mouseover", (d) =>
+					d3.select("text.node").remove()
+					d3.select("rect.node").remove()
+					@vis.append("text").text(d.name).attr("x", d.x+20).attr("y", d.y+5).attr("id", d.name).attr("fill","#fff").attr("class","node")
+					wi = parseInt(d3.select("text").style("width").split('px')[0]) + 8
+					@vis.insert("svg:rect", "text").attr("x", d.x+16).attr("y", d.y-12).attr("width",wi).attr("height",24).style("fill", "url(#gradient)").attr("class","node")
+				)
+				.on("mouseout", (d) =>
+					d3.select("text.node").remove()
+					d3.select("rect.node").remove()
+				)
+
+			nodeEnter.append("svg:circle").attr("r", (d) =>
+				if d.depth is 0
+					@vis.append("text").text(d.name).attr("x", d.x+20).attr("y", d.y+5).attr("id", d.name).attr("fill","#fff").attr("class","root")
+					wi = parseInt(d3.select("text").style("width").split('px')[0]) + 8
+					@vis.insert("svg:rect", "text").attr("x", d.x+16).attr("y", d.y-12).attr("width",wi).attr("height",24).style("fill", "url(#gradient)").attr("class","root")
+
+				if d.depth is 0 then 4 else 10
 			)
-			.on("click", @clickNode)
 
-			.on("mouseover", (d) =>
-				d3.select("text").remove()
-				d3.select("rect.bg").remove()
-				@vis.append("text").text(d.name).attr("x", d.x+20).attr("y", d.y+5).attr("id", d.name).attr("fill","#fff")
-				wi = parseInt(d3.select("text").style("width").split('px')[0]) + 8
-				@vis.insert("svg:rect", "text").attr("x", d.x+16).attr("y", d.y-12).attr("width",wi).attr("height",24).style("fill", "url(#gradient)").attr("class","bg")
-
-			)
-			.on "mouseout", (d) =>
-				d3.select("text").remove()
-				d3.select("rect.bg").remove()
-
-
-			nodeEnter.append("svg:circle").attr("r", (d) ->
-				if d.depth is 0 then 2 else 10
-			)
-
-			nodeEnter.transition().duration(@duration).attr("transform", (d) ->
+			nodeEnter.transition().duration(@duration)
+			.attr("transform", (d) ->
 				"translate(" + d.x + "," + d.y + ")"
-			).style("opacity", 1).select("circle").style("fill", (d) ->
-				(if d.children then "#FC2B2B" else "#767676")
+			)
+			.style("opacity", 1).select("circle").style("fill", (d) ->
+				(if d.children or (d.chidlren and d.children.length > 0) then "#FC2B2B" else "#767676")
 			)
 
-			node.transition().duration(@duration).attr("transform", (d) ->
+			node.transition().duration(@duration)
+			.attr("transform", (d) ->
 				"translate(" + d.x + "," + d.y + ")"
-			).style "opacity", 1
+			)
+			.style "opacity", 1
 
-			node.exit().transition().duration(@duration).attr("transform", (d) ->
+			node.exit().transition().duration(@duration)
+			.attr("transform", (d) ->
 				"translate(" + source.x + "," + source.y + ")"
-			).style("opacity", 1e-6).remove()
+			)
+			.style("opacity", 1e-6).remove()
 
 		else
 			node.on("mouseover",null)
+			d3.select("text.root").remove()
+			d3.select("rect.root").remove()
+
 			nodeEnter = node.enter().append("svg:g")
 				.attr("class", "node")
 				.attr("width",200).attr("height",24)
@@ -173,7 +181,6 @@ class App.Visualizer extends Exo.Spine.Controller
 					"translate(" + source.y0 + "," + source.x0 + ")"
 				)
 				.on("click", @clickNode)
-
 
 			nodeEnter.append("svg:rect")
 				.attr("x", -50)
@@ -251,7 +258,7 @@ class App.Visualizer extends Exo.Spine.Controller
 			d.y0 = d.y
 
 	clickNode: (d) =>
-		if d.name != "root"
+		if d.depth != 0
 			@trigger "nodeSelected", d
 		if d.children
 			d._children = d.children

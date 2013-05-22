@@ -35,7 +35,6 @@ class App.PropsEditor extends Exo.Spine.Controller
 		@form.ajaxForm
 			dataType:  'json'
 			beforeSend: =>
-				console.log "wtf"
 				@submitBtn.attr
 				percentVal = "0%"
 				@bar.width percentVal
@@ -49,8 +48,9 @@ class App.PropsEditor extends Exo.Spine.Controller
 			complete: (xhr) =>
 				layer = new App.Layer
 				attr = JSON.parse xhr.responseText
-				layer.updateAttributes attr
+				# layer.updateAttributes attr
 				console.log layer,attr
+				Spine.trigger "dataAdded", attr
 				#layer.save()
 
 	doActivate: ->

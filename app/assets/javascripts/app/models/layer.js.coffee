@@ -4,4 +4,8 @@ class App.Layer extends Spine.Model
 
   @belongsTo 'layer_type', 'App.LayerType'
 
+  @hasMany 'layers', 'App.Layer'
+
   @currentLayer = null
+
+  # @url = "/nested"
