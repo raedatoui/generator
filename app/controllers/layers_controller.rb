@@ -36,4 +36,5 @@ class LayersController <  InheritedResources::Base
     @types = LayerType.all
     respond_with @types
   end
+
 end

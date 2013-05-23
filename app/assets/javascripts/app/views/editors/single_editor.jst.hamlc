@@ -3,6 +3,9 @@
 %form#new_layer.new_layer{ :accept-charset => "UTF-8", :action => "/layers", :enctype => "multipart/form-data", :method => "post", :data-type => "json"}
 	%input{:name => "layer[layer_type_id]", :type => "hidden", :value => @id}
 	%ul
+
+		!= JST["app/views/editors/parent_selector"]({parents:@parents})
+
 		%li
 			%span.label name
 			%input{ :name => "layer[name]"}}

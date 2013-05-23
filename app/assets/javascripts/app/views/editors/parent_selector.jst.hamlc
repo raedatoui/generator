@@ -1,0 +1,6 @@
+%li
+  %span.label Parent
+  %select{:name => "layer[parent_id]"}
+    %option{:value => "1"} Root
+    - for parent in @parents
+      %option{:value => parent.id}= parent.name

@@ -257,7 +257,6 @@ DEPENDENCIES
   haml
   haml-rails
   haml_coffee_assets
-  inherited_resources
   jquery-rails
   libxml-ruby
   mysql2

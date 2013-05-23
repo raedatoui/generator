@@ -13,6 +13,7 @@
 config/database.yml
 
 public/layer_type/*
+public/layer/*
 .DS_Store
 
 vendor/d3/*

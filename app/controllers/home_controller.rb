@@ -1,4 +1,10 @@
 class HomeController < ApplicationController
-	def index
+	respond_to :js, :json
+  def index
 	end
+  def types
+    @types = LayerType.all
+    respond_with @types
+  end
+
 end

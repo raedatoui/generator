@@ -4,7 +4,6 @@ gem "rails"
 gem "mysql2"
 gem "unicorn"
 gem "therubyracer"
-gem "inherited_resources"
 
 gem "rvm-capistrano"
 gem "capistrano"

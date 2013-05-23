@@ -21,7 +21,7 @@ class App.PropsEditor extends Exo.Spine.Controller
 		# 	$(this).parents("form:first").submit()
 
 	render: =>
-		@html @view("editors/#{@item.slug}_editor",@item)
+		@html @view("editors/#{@item.slug}_editor",{"layer":@item, "parents":App.LayerType.find(3).layers().all()})
 		setTimeout =>
 			@keep_rendering()
 		, 250
@@ -46,12 +46,13 @@ class App.PropsEditor extends Exo.Spine.Controller
 				@percent.html percentVal
 
 			complete: (xhr) =>
-				layer = new App.Layer
 				attr = JSON.parse xhr.responseText
-				# layer.updateAttributes attr
-				console.log layer,attr
-				Spine.trigger "dataAdded", attr
-				#layer.save()
+				App.Layer.url = "/layers/#{attr.id}"
+				App.Layer.one "refresh", (data) =>
+						console.log "We have data", data
+						App.Layer.url = "/layers"
+						Spine.trigger "dataAdded", attr
+				App.Layer.fetch()
 
 	doActivate: ->
 		TweenLite.to @el, 1,
@@ -68,7 +69,6 @@ class App.PropsEditor extends Exo.Spine.Controller
 				@onDeactivated()
 
 	save: (e) =>
-		console.log e
 		e.preventDefault()
 
 		#e.stopPropagration()
