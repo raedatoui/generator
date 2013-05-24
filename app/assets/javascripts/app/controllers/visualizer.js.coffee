@@ -24,8 +24,8 @@ class App.Visualizer extends Exo.Spine.Controller
 		, 250
 
 		Spine.bind "dataAdded", (data) =>
-			@rootNode.children.push data
-			@debounce()
+			@keep_rendering()
+			# @debounce()
 
 	keep_rendering: =>
 		@offset = 20

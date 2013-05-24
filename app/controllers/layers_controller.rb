@@ -12,6 +12,11 @@ class LayersController <  InheritedResources::Base
     respond_with @layers
   end
 
+  def show
+    @layer = Layer.find(params[:id])
+    respond_with @layer.to_node
+  end
+
   def nested
     root = Layer.find(:first, :conditions => ["ancestry is ?", nil])
     respond_with root.to_node

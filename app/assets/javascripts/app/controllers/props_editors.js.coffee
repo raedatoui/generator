@@ -51,7 +51,7 @@ class App.PropsEditor extends Exo.Spine.Controller
 				App.Layer.one "refresh", (data) =>
 						console.log "We have data", data
 						App.Layer.url = "/layers"
-						Spine.trigger "dataAdded", attr
+						Spine.trigger "dataAdded", data
 				App.Layer.fetch()
 
 	doActivate: ->
