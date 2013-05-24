@@ -23,9 +23,12 @@ class App.Visualizer extends Exo.Spine.Controller
 			@keep_rendering()
 		, 250
 
-		Spine.bind "dataAdded", (data) =>
-			@keep_rendering()
-			# @debounce()
+		Spine.bind "dataAdded", (layer) =>
+			console.log layer
+			d3.selectAll("circle").each (d, i) =>
+				if d.id is layer.parent_id
+					d.children.push(layer.attributes())
+					@debounce()
 
 	keep_rendering: =>
 		@offset = 20

@@ -19,6 +19,7 @@ class Layer < ActiveRecord::Base
     self.attributes.each do |attr|
       result[attr[0]] = attr[1]
     end
+    result["parent_id"] = self.parent.nil? ? "" : self.parent.id
     result["children"] = self.children.map { |c| c.to_node }
     result
   end

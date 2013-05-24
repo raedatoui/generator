@@ -30,7 +30,7 @@ class App extends Spine.Controller
 		App.LayerType.fetch()
 
 	typesLoaded: =>
-		App.Layer.bind 'refresh', @layersLoaded
+		App.Layer.one 'refresh', @layersLoaded
 		App.Layer.fetch()
 
 	layersLoaded: =>

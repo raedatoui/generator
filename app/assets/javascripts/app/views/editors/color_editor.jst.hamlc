@@ -5,7 +5,10 @@
 / %input{:name => "authenticity_token", :type => "hidden", :value => $("meta[name=csrf-token]").attr("content")}
 
 %form#new_layer.new_layer{ :accept-charset => "UTF-8", :action => "/layers", :method => "post", :data-type => "json"}
-	%input{:name => "layer[layer_type_id]", :type => "hidden", :value => @id}
+
+	- if @item.constructor.name is "LayerType"
+		!= JST["app/views/editors/layer_type_input"]({layer_type_id:@item.id})
+
 	%ul
 
 		!= JST["app/views/editors/parent_selector"]({parents:@parents})

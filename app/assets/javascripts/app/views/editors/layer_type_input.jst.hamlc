@@ -1,0 +1,1 @@
+%input{:name => "layer[layer_type_id]", :type => "hidden", :value => @layer_type_id}

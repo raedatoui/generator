@@ -21,7 +21,7 @@ class App.PropsEditor extends Exo.Spine.Controller
 		# 	$(this).parents("form:first").submit()
 
 	render: =>
-		@html @view("editors/#{@item.slug}_editor",{"layer":@item, "parents":App.LayerType.find(3).layers().all()})
+		@html @view("editors/#{@item.slug}_editor",{"item":@item, "parents":App.LayerType.find(3).layers().all()})
 		setTimeout =>
 			@keep_rendering()
 		, 250
@@ -49,9 +49,8 @@ class App.PropsEditor extends Exo.Spine.Controller
 				attr = JSON.parse xhr.responseText
 				App.Layer.url = "/layers/#{attr.id}"
 				App.Layer.one "refresh", (data) =>
-						console.log "We have data", data
 						App.Layer.url = "/layers"
-						Spine.trigger "dataAdded", data
+						Spine.trigger "dataAdded", data[0]
 				App.Layer.fetch()
 
 	doActivate: ->
