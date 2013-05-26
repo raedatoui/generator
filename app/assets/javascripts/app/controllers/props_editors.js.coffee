@@ -37,6 +37,8 @@ class App.PropsEditor extends Exo.Spine.Controller
 			beforeSend: =>
 				@submitBtn.attr
 				percentVal = "0%"
+				@bar.show()
+				@percent.show()
 				@bar.width percentVal
 				@percent.html percentVal
 
@@ -46,6 +48,8 @@ class App.PropsEditor extends Exo.Spine.Controller
 				@percent.html percentVal
 
 			complete: (xhr) =>
+				@bar.hide()
+				@percent.hide()
 				attr = JSON.parse xhr.responseText
 				App.Layer.url = "/layers/#{attr.id}"
 				App.Layer.one "refresh", (data) =>

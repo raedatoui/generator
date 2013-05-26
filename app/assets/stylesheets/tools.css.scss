@@ -1,12 +1,12 @@
 @import "common/mixins";
 
-$panelWidth: 340px;
+$panelWidth: 400px;
 $barWidth: 20px;
 $gray : #ccc;
 $dark : #444;
 $gutter: 20px;
 $white: #ededed;
-$bg: rgb(131, 16, 16);
+$bg: #000;
 
 .tools {
 	background-color: $bg;
