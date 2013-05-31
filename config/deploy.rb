@@ -1,11 +1,14 @@
 require 'capistrano_colors'
 require 'capistrano/ext/multistage'
 require 'rvm/capistrano'
+load 'config/deploy/cap_notify.rb'
 
 set :stages, ['staging', 'production']
 set :default_stage, 'staging'
 
-set :application, "nvtv"
+set :application, "generator"
+
+set :notify_emails, ["raed.atoui@gmail.com"]
 
 set :unicorn_pid, Proc.new { "#{current_path}/tmp/pids/unicorn.pid" }
 
@@ -19,10 +22,13 @@ set :deploy_via, :remote_cache
 set :rvm_ruby_string, Proc.new { "2.0.0@generator" }       # Or whatever env you want it to run in.
 set :rvm_type, :user
 
+after :deploy, 'deploy:send_notification'
+
 ## Branching ##
 
 # Use master by default
 set :branch, "origin/master"
+
 namespace :deploy do
 
   desc "Deploy application"
@@ -81,7 +87,6 @@ namespace :deploy do
       run "ln -s #{shared_path}/log #{current_path}/log"
       run "ln -s #{shared_path}/tmp #{current_path}/tmp"
   end
-
 end
 
 namespace :db do
@@ -104,6 +109,7 @@ namespace :assets do
         run "cd #{current_path} && /usr/bin/env rake assets:clean RAILS_ENV=#{stage}; rake assets:precompile RAILS_ENV=#{stage}"
     end
 end
+
 namespace :unicorn do
   desc "start unicorn"
   task :start, :roles => :app do
@@ -124,5 +130,12 @@ namespace :unicorn do
     else
       unicorn.start
     end
+  end
+end
+
+namespace :deploy do
+  desc "Send email notification"
+  task :send_notification do
+    Notifier.deploy_notification(self).deliver
   end
 end
