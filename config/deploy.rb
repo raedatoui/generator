@@ -1,7 +1,9 @@
 require 'capistrano_colors'
 require 'capistrano/ext/multistage'
 require 'rvm/capistrano'
-load 'config/deploy/cap_notify.rb'
+# load 'config/deploy/cap_notify.rb'
+require 'capistrano/notifier/mail'
+
 
 set :stages, ['staging', 'production']
 set :default_stage, 'staging'
@@ -22,7 +24,22 @@ set :deploy_via, :remote_cache
 set :rvm_ruby_string, Proc.new { "2.0.0@generator" }       # Or whatever env you want it to run in.
 set :rvm_type, :user
 
-after :deploy, 'deploy:send_notification'
+set :notifier_mail_options, {
+  :method => :smtp, # :smtp, :sendmail, or any other valid ActionMailer delivery method
+  :from   => 'raed.atoui@gmail.com',
+  :to     => ['raed.atoui@gmail.com', 'raed@your-majesty.com'],
+  :github => 'raedatoui/generator',
+  :smtp_settings => {
+      address: "smtp.gmail.com",
+      port: 587,
+      domain: "gmail.com",
+      authentication: "plain",
+      enable_starttls_auto: true,
+      user_name: "raed.atoui",
+      password: "3ntiss@r151"
+    }
+}
+
 
 ## Branching ##
 
@@ -51,6 +68,7 @@ namespace :deploy do
     db.migrate
     assets.compile
     unicorn.reload
+    notify.mail
   end
 
   desc "Setup a git based deployment."
@@ -130,12 +148,5 @@ namespace :unicorn do
     else
       unicorn.start
     end
-  end
-end
-
-namespace :deploy do
-  desc "Send email notification"
-  task :send_notification do
-    Notifier.deploy_notification(self).deliver
   end
 end

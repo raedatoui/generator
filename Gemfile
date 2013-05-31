@@ -47,4 +47,4 @@ gem "ancestry"
 
 gem "activeadmin"
 
-gem "tlsmail"
+gem "capistrano-notifier"
