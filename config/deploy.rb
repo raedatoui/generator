@@ -1,7 +1,6 @@
 require 'capistrano_colors'
 require 'capistrano/ext/multistage'
 require 'rvm/capistrano'
-# load 'config/deploy/cap_notify.rb'
 require 'capistrano/notifier/mail'
 
 
@@ -52,6 +51,7 @@ namespace :deploy do
   task :default do
     update_code
     unicorn.reload
+    notify.mail
   end
 
   desc "Deploy application with assets only"
@@ -59,6 +59,7 @@ namespace :deploy do
     update_code
     assets.compile
     unicorn.reload
+    notify.mail
   end
 
   desc "Deploy application with migrations, assets and bundling"

@@ -1,11 +1,6 @@
-class LayersController <  InheritedResources::Base
+class LayersController <  ApplicationController
 
   respond_to :js, :json
-
-  def show
-    @layer = Layer.find(params[:id])
-    render :json => @layer.to_json
-  end
 
   def index
     @layers = Layer.find(:all, :conditions => ["ancestry is not ?", nil])

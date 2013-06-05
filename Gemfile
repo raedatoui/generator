@@ -2,49 +2,47 @@ source 'https://rubygems.org'
 
 gem "rails"
 gem "mysql2"
-gem "unicorn"
-gem "therubyracer"
 
 gem "rvm-capistrano"
 gem "capistrano"
 gem "capistrano-ext"
 gem "capistrano_colors"
+gem "capistrano-notifier"
 
 gem "rack-cors", :require => "rack/cors"
 
-gem "open_gem", :group => :development
-gem "rails-erd"
-
-gem "haml", :group => :development
-
-gem "haml-rails", :group => :development
-gem "jquery-rails", :group => :development
-
-gem 'haml_coffee_assets'
-gem 'execjs'
-
-gem "sass-rails", :group => :assets
-gem "coffee-rails", :group => :development
-gem "uglifier", :group => :development
-gem "compass-rails", :group => :assets
-gem "compass"
-gem "exojs"
-gem 'spine-rails'
-gem 'eco'
-gem 'ruby-haml-js'
-
-gem 'd3_rails'
-
 gem "carrierwave"
 gem "rmagick"
-
-gem 'openurl'
-gem 'libxml-ruby'
-
-gem 'whenever'
-
 gem "ancestry"
-
 gem "activeadmin"
 
-gem "capistrano-notifier"
+gem "rails-erd"
+
+
+group :assets do
+  gem "d3_rails"
+  gem "web-lib", github: "raedatoui/web-lib"
+  gem "eco"
+  gem "ruby-haml-js"
+  gem "haml_coffee_assets"
+  gem "therubyracer"
+  gem "sass-rails"
+  gem "compass-rails"
+  gem "coffee-rails"
+  gem "exojs"
+  gem "uglifier"
+end
+
+group :production do
+  gem "unicorn"
+end
+
+group :development do
+  gem "haml-rails"
+  gem "jquery-rails"
+end
+
+
+
+
+

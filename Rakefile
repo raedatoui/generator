@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Graphcomposer::Application.load_tasks
+Generator::Application.load_tasks
