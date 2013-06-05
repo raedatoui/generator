@@ -14,12 +14,10 @@ gem "rack-cors", :require => "rack/cors"
 gem "carrierwave"
 gem "rmagick"
 gem "ancestry"
-gem "activeadmin"
-
 gem "rails-erd"
 
-
 group :assets do
+  gem "json2-rails"
   gem "d3_rails"
   gem "web-lib", github: "raedatoui/web-lib"
   gem "eco"

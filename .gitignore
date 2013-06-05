@@ -16,6 +16,5 @@ public/layer_type/*
 public/layer/*
 .DS_Store
 
-vendor/d3/*
+vendor/spine/*
 
-active_admin.css
