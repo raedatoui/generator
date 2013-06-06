@@ -38,21 +38,17 @@ class LayersController <  ApplicationController
   private
 
   def load_layer_type
-    @layer_type = if params[:token] == 'layers'
-      # TODO: This is only needed because Spine can't route saves properly
-      LayerType.find params[:layer_type_id]
-    else
-      LayerType.find_by_slug params[:token]
-    end
+    @layer_type = LayerType.find params[:layer][:layer_type_id]
     raise ActionController::RoutingError.new('Not Found') unless @layer_type
   end
 
   def layer_params
-    params.require(:layer).permit(:name, :file, *layer_type_attributes)
+    params.require("layer") #.permit(:name, :file)
   end
 
   def load_layer
     @layer = @layer_type.layers.find params[:id]
   end
+
 
 end
