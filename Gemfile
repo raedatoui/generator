@@ -19,6 +19,7 @@ gem "rails-erd"
 
 group :assets do
   gem "json2-rails"
+  gem "jquery-rails"
   gem "d3_rails"
   gem "web-lib", github: "raedatoui/web-lib"
   gem "eco"
