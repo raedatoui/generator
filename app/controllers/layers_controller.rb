@@ -1,7 +1,8 @@
 class LayersController <  ApplicationController
 
-  before_filter :load_layer_type, except: [:index, :nested]
-  before_filter :load_layer, except: [:index, :create, :nested]
+  before_filter :load_layer_type, only: [:create]
+  before_filter :load_layer, only: [:show, :update]
+  before_filter :load_parent_layer, only: [:create, :update]
 
   respond_to :js, :json
 
@@ -16,6 +17,7 @@ class LayersController <  ApplicationController
 
   def update
     @layer.update_attributes layer_params
+    @layer.update_attribute :parent, @parent_layer
     respond_with @layer
   end
 
@@ -26,6 +28,7 @@ class LayersController <  ApplicationController
 
   def create
     @layer = @layer_type.layers.create layer_params
+    @layer.update_attribute :parent, @parent_layer
     respond_with @layer, location: layer_url(@layer, token: @layer_type.slug)
   end
 
@@ -42,12 +45,16 @@ class LayersController <  ApplicationController
     raise ActionController::RoutingError.new('Not Found') unless @layer_type
   end
 
-  def layer_params
-    params.require("layer") #.permit(:name, :file)
+  def load_layer
+    @layer =  Layer.find params[:id]
   end
 
-  def load_layer
-    @layer = @layer_type.layers.find params[:id]
+  def load_parent_layer
+    @parent_layer = Layer.find params[:layer][:parent_id]
+  end
+
+  def layer_params
+    params.require("layer").permit(:name, :file, :layer_type_id)
   end
 
 

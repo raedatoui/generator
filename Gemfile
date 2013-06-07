@@ -14,6 +14,7 @@ gem "rack-cors", :require => "rack/cors"
 gem "carrierwave"
 gem "rmagick"
 gem "ancestry"
+gem "strong_parameters"
 gem "rails-erd"
 
 group :assets do

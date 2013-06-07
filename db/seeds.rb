@@ -1,19 +1,10 @@
-require "xml"
+# require "xml"
 
 LayerType.delete_all
 ActiveRecord::Base.connection.execute("TRUNCATE TABLE layer_types;")
 
 Layer.delete_all
 ActiveRecord::Base.connection.execute("TRUNCATE TABLE layers;")
-
-AdminUser.delete_all
-ActiveRecord::Base.connection.execute("TRUNCATE TABLE admin_users;")
-
-user = AdminUser.find_or_create_by_email 'admin@gencell.dev' do |u|
-  u.password = 'password'
-  u.password_confirmation = 'password'
-  u.name = 'Admin User'
-end
 
 ["single","repeat","box", "color", "repeat_box"].each do |type|
 	layer_type = LayerType.create! :name => type.titleize, :slug => type

@@ -9,7 +9,7 @@ set :default_stage, 'staging'
 
 set :application, "generator"
 
-set :notify_emails, ["raed.atoui@gmail.com"]
+set :notify_emails, ["raed.atoui@gmail.com","pierreemmanuelfillet@gmail.com"]
 
 set :unicorn_pid, Proc.new { "#{current_path}/tmp/pids/unicorn.pid" }
 
@@ -66,7 +66,7 @@ namespace :deploy do
   task :cold do
     update_code
     bundle.install
-    db.migrate
+    db.reset
     assets.compile
     unicorn.reload
     notify.mail
@@ -112,6 +112,11 @@ namespace :db do
   desc "Migrate"
   task :migrate do
     run "cd #{current_path} && /usr/bin/env rake db:migrate RAILS_ENV=#{stage}"
+  end
+
+  desc "Reset"
+  task :reset do
+    run "cd #{current_path} && /usr/bin/env rake db:reset RAILS_ENV=#{stage}"
   end
 end
 

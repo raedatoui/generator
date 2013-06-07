@@ -27,6 +27,8 @@ class App.Visualizer extends Exo.Spine.Controller
 			console.log layer
 			d3.selectAll("circle").each (d, i) =>
 				if d.id is layer.parent_id
+					unless d.children
+						d.children = []
 					d.children.push(layer.attributes())
 					@debounce()
 
