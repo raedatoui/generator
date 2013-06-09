@@ -17,8 +17,8 @@ gem "ancestry"
 gem "strong_parameters"
 gem "rails-erd"
 
+gem "haml-rails"
 group :assets do
-  gem "haml-rails"
   gem "json2-rails"
   gem "jquery-rails"
   gem "d3_rails"
