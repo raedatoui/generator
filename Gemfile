@@ -18,6 +18,7 @@ gem "strong_parameters"
 gem "rails-erd"
 
 group :assets do
+  gem "haml-rails"
   gem "json2-rails"
   gem "jquery-rails"
   gem "d3_rails"
@@ -36,12 +37,6 @@ end
 group :production do
   gem "unicorn"
 end
-
-group :development do
-  gem "haml-rails"
-  gem "jquery-rails"
-end
-
 
 
 
