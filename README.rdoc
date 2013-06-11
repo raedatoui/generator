@@ -1,4 +1,4 @@
-== composer for cinder
+== Analysis and Modeling tool for layered photoshop documents
 The proposed model is a hierarchical tree structure in the first place, leveraging a series of simple rules in order to scaffold failry deep and complex organizations
 
 Once this structure is established, additional functionality will be added in order to view this model from a different perspective
