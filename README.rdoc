@@ -1,6 +1,0 @@
-== Analysis and Modeling tool for layered photoshop documents
-The proposed model is a hierarchical tree structure in the first place, leveraging a series of simple rules in order to scaffold failry deep and complex organizations
-
-Once this structure is established, additional functionality will be added in order to view this model from a different perspective
-and allow a better analysis of the painting and its potential behavior
-The application is not only concerned in 2d modeling and adding a timeline, but also allowing to create unforseen connection between the different parts of the piece
