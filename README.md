@@ -6,17 +6,17 @@ This web application has two main goals:
 * create a modular layer based model of the paintings
 * implement behavioral algorithms by leveraging the layered model
 
-These goals are only clear in the initial phase of developement, and the resulting framework can be potentially extended into other areas.
+These goals are only clear in the initial phase of development, and the resulting framework can be potentially extended into other areas.
 The framework can be used in tandem with Cinder to power future animated paintings and extend to other medium such as sound.
-The algorithmic animations could also be extended to include interactiviy from viewers, leveraging sensors and other input devices.
+The algorithmic animations could also be extended to include interactivity from viewers, leveraging sensors and other input devices.
 
 
 ##2. Modeling and data structures
-The pantings are realized as large photoshop documents, with a large amount of layers, loosely organized and without any structural convention.
+The paintings are realized as large photoshop documents, with a large amount of layers, loosely organized and without any structural convention.
 Once the first Cinder prototype was created, it became clear that some hierarchical structure was required to organize all these layers in order to facilitate and automate their rendering in a real time environment.
 Figures consist of a number of grouped layers, which in turn are repeated and conglomerated in groups that were semantically related.
 
-The proposed model is a hierarchical tree structure in the first place, leveraging a series of simple rules in order to e a failry deep and complex organization.
+The proposed model is a hierarchical tree structure in the first place, leveraging a series of simple rules in order to e a fairly deep and complex organization.
 Each layer is represented as an object, which can be of different types. An object can be a simple color region, a single graphic, or a graphic that is repeated in circular fashion.
 
 This infinitely nested tree is the ideal data structure for representing the layers of a painting. As such, complete and modular control can be applied to any object or to any group of objects, allowing for flexibility in animating and modifying the properties of these objects. 
