@@ -21,6 +21,11 @@ Each layer is represented as an object, which can be of different types. An obje
 
 This infinitely nested tree is the ideal data structure for representing the layers of a painting. As such, complete and modular control can be applied to any object or to any group of objects, allowing for flexibility in animating and modifying the properties of these objects. 
 
+![alt tag](http://generator.raedatoui.com/eyebeam1.png)
+
+
+![alt tag](http://generator.raedatoui.com/eyebeam2.png)
+
 
 ##3. Algorithms for behavior 
 Once this structure is established, additional functionality will be added in order to view this model from a different perspective
