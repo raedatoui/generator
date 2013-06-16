@@ -7,7 +7,7 @@ This web application has two main goals:
 * implement behavioral algorithms by leveraging the layered model
 
 These goals are only clear in the initial phase of development, and the resulting framework can be potentially extended into other areas.
-The framework can be used in tandem with , https://github.com/raedatoui/Cellule, to power future animated paintings and extend to other medium such as sound.
+The framework can be used in tandem with Cinder, https://github.com/raedatoui/Cellule, to power future animated paintings and extend to other medium such as sound.
 The algorithmic animations could also be extended to include interactivity from viewers, leveraging sensors and other input devices.
 
 
