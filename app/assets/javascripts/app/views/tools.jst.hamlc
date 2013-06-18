@@ -1,12 +1,12 @@
 .actions
-	.button#add
+	%a.button#add{:href => "#/new"}
 		.icon.ui-add
 
-	.button#delete
-		.icon.ui-delete
+	/ .button#delete
+	/ 	.icon.ui-delete
 
-	.button#info
-		.icon.ui-info
+	/ .button#info
+	/ 	.icon.ui-info
 
 .bar
 	.toggle.ui-bar-open

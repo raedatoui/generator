@@ -36,12 +36,14 @@ class App extends Spine.Controller
 	layersLoaded: =>
 		@visualizer = new App.Visualizer
 		@append @visualizer
-		@visualizer.bind "nodeSelected", (data) =>
-			@tools.showInfo data
+		# @visualizer.bind "nodeSelected", (data) =>
+		# 	@tools.showInfo data
 
 		@tools = new App.Tools
 		@append @tools
 		@tools.bind "moved", (w) =>
 			@visualizer.slide w
+
+		Spine.Route.setup(trigger:true)
 
 window.App = App

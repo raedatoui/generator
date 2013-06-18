@@ -1,89 +1,110 @@
-class App.Tools extends Exo.Spine.Controller
+class App.Tools extends App.BaseController
 
-	className: "tools"
+    className: "tools"
 
-	elements:
-		".bar" : "bar"
-		".toggle" : "toggleBtn"
-		".actions" : "actionsPanel"
-		"#add" : "addButton"
-		"#info" : "infoButton"
+    elements:
+        ".bar" : "bar"
+        ".toggle" : "toggleBtn"
+        ".actions" : "actionsPanel"
+        "#add" : "addButton"
+        "#delete" : "deleteButton"
+        "#info" : "infoButton"
+        ".actions" : "container"
 
-	events:
-		"click .bar": "togglePanel"
-		"click #add" : "showCreator"
+    events:
+        "click .bar": "togglePanel"
+        # "click #add" : "showCreator"
 
-	panelClosed = true
-	# select, info / props - update, add, delete
+    panelClosed = true
+    # select, info / props - update, add, delete
 
-	constructor: ->
-		super
-			initialState: Exo.Node.States.ACTIVATED
+    constructor: ->
+        super
+            initialState: Exo.Node.States.ACTIVATED
 
-		panelClosed = true
-		@render()
+        panelClosed = true
 
-	render: =>
-		@html @view("tools")
+        @routes
+            '/new/:type': (params) ->
+                console.log "yooo"
+                @deleteButton.hide()
+                @infoButton.hide()
+                $('.button').removeClass "selected"
+                if @current is undefined or @current.constructor.name != "LayerCreator"
+                    creator = new App.LayerCreator
+                    creator.bind "closed", @selectionMade
+                    @activateNext creator
+                    @addButton.addClass "selected"
 
-	togglePanel: =>
-		if panelClosed
-			@trigger "moved", 342
-			TweenLite.to @el, .5,
-				css:
-					left: 0
-				onComplete: =>
-					panelClosed = false
-					@toggleBtn.removeClass("ui-bar-open").addClass("ui-bar-close")
-		else
-			@trigger "moved", @bar.width()
-			TweenLite.to @el, .5,
-				css:
-					left: -@el.width() + @bar.width()
-				onComplete: =>
-					panelClosed = true
-					@toggleBtn.removeClass("ui-bar-closed").addClass("ui-bar-open")
+            '/edit/:id': (params) ->
+                console.log params
+                @deleteButton.show()
+                @infoButton.show()
+                if panelClosed
+                    @togglePanel()
+                $('.button').removeClass "selected"
+                @infoButton.addClass "selected"
 
-	showCreator: =>
-		$('.button').removeClass "selected"
-		if @current is undefined or @current.constructor.name != "LayerCreator"
-			creator = new App.LayerCreator
-			creator.bind "closed", @selectionMade
-			@activateNext creator
-			@addButton.addClass "selected"
+                App.Layer.currentLayer = App.Layer.find(params.id)
+                if @current && @current.constructor.name  is "LayerInfo"
+                    @current.prepareWithModel App.Layer.currentLayer
+                else
+                    props = new App.LayerInfo
+                    @activateNext props
 
-	showInfo: (data) =>
-		console.log data
-		if panelClosed
-			@togglePanel()
-		$('.button').removeClass "selected"
-		@infoButton.addClass "selected"
 
-		App.Layer.currentLayer = App.Layer.find(data.id)
-		if @current && @current.constructor.name  is "LayerInfo"
-			@current.prepareWithModel App.Layer.currentLayer
-		else
-			props = new App.LayerInfo
-			@activateNext props
+        @render()
 
-	selectionMade: =>
-		@addButton.removeClass "selected"
+    render: =>
+        @html @view("tools")
+        @deleteButton.hide()
+        @infoButton.hide()
 
-	activateNext: (next) ->
-		unless @next
-			@next = next
-			@addChild @next											# Add the section to the controller hierarchy
-			@next.bind "onDeactivated", @onControllerDeactivated	# Get notified when the controller is deactivated
-			@next.bind "onActivated", @onControllerActivated		# and activated.
-			@next.appendTo @actionsPanel										# Also append it's @el to the DOM.
-			@next.activate()										# Attempt to activate the section.
+    togglePanel: =>
+        if panelClosed
+            @trigger "moved", 342
+            TweenLite.to @el, .5,
+                css:
+                    left: 0
+                onComplete: =>
+                    panelClosed = false
+                    @toggleBtn.removeClass("ui-bar-open").addClass("ui-bar-close")
+        else
+            @trigger "moved", @bar.width()
+            TweenLite.to @el, .5,
+                css:
+                    left: -@el.width() + @bar.width()
+                onComplete: =>
+                    panelClosed = true
+                    @toggleBtn.removeClass("ui-bar-closed").addClass("ui-bar-open")
 
-	onControllerActivated: (controller) =>
-		@current = controller
-		@next = null
-		if @current.constructor.name is "LayerInfo"
-			@current.prepareWithModel App.Layer.currentLayer
+    # showCreator: =>
+    #   @deleteButton.hide()
+    #   @infoButton.hide()
+    #   $('.button').removeClass "selected"
+    #   if @current is undefined or @current.constructor.name != "LayerCreator"
+    #       creator = new App.LayerCreator
+    #       creator.bind "closed", @selectionMade
+    #       @activateNext creator
+    #       @addButton.addClass "selected"
 
-	onControllerDeactivated: (controller) =>
-		@removeChild controller
-		controller.release()
+    # showInfo: (data) =>
+    #   console.log data
+    #   @deleteButton.show()
+    #   @infoButton.show()
+    #   if panelClosed
+    #       @togglePanel()
+    #   $('.button').removeClass "selected"
+    #   @infoButton.addClass "selected"
+
+    #   App.Layer.currentLayer = App.Layer.find(data.id)
+    #   if @current && @current.constructor.name  is "LayerInfo"
+    #       @current.prepareWithModel App.Layer.currentLayer
+    #   else
+    #       props = new App.LayerInfo
+    #       @activateNext props
+
+    selectionMade: =>
+        @addButton.removeClass "selected"
+
+

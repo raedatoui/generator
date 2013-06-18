@@ -2,12 +2,16 @@ class App.Visualizer extends Exo.Spine.Controller
 
 	className: 'visualizer'
 
+	elements:
+		"#mCanvas" : "svgContainer"
+		"#display" : "displayContainer"
+
 	events:
 		"click #rotate" : "toggleLayout"
+		"click #flip" : "flip"
 
 	constructor: ->
 		super
-		@el.attr "id", "mCanvas"
 		@rootNode = undefined
 		@render()
 
@@ -111,6 +115,41 @@ class App.Visualizer extends Exo.Spine.Controller
 			css:
 				left: w
 
+	clickNode: (d) =>
+		if d.depth != 0
+			@navigate "/edit/#{d.id}"
+			# @trigger "nodeSelected", d
+		if d.children
+			d._children = d.children
+			d.children = null
+		else
+			d.children = d._children
+			d._children = null
+		@update d
+
+	toggleNode: (d) =>
+		if d.children
+			d._children = d.children
+			d.children = null
+		else
+			d.children = d._children
+			d._children = null
+
+	toggleAll: (d) =>
+		if d.children
+			d.children.forEach @toggleAll
+			@toggleNode d
+
+	flip: =>
+		TweenMax.to @svgContainer, 1,
+			css:
+				opacity:0
+			ease: Linear.easeNone
+
+		TweenMax.to @displayContainer, 1,
+			css:
+				opacity:1
+			ease: Linear.easeNone
 	update: (source) =>
 		# Compute the new tree layout.
 		nodes = @tree.nodes(@rootNode).reverse()
@@ -261,28 +300,4 @@ class App.Visualizer extends Exo.Spine.Controller
 		nodes.forEach (d) ->
 			d.x0 = d.x
 			d.y0 = d.y
-
-	clickNode: (d) =>
-		if d.depth != 0
-			@trigger "nodeSelected", d
-		if d.children
-			d._children = d.children
-			d.children = null
-		else
-			d.children = d._children
-			d._children = null
-		@update d
-
-	toggleNode: (d) =>
-		if d.children
-			d._children = d.children
-			d.children = null
-		else
-			d.children = d._children
-			d._children = null
-
-	toggleAll: (d) =>
-		if d.children
-			d.children.forEach @toggleAll
-			@toggleNode d
 

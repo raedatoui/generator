@@ -9,7 +9,7 @@ set :default_stage, 'staging'
 
 set :application, "generator"
 
-set :notify_emails, ["raed.atoui@gmail.com","pierreemmanuelfillet@gmail.com"]
+set :notify_emails, ["raed.atoui@gmail.com"]
 
 set :unicorn_pid, Proc.new { "#{current_path}/tmp/pids/unicorn.pid" }
 
@@ -26,7 +26,8 @@ set :rvm_type, :user
 set :notifier_mail_options, {
   :method => :smtp, # :smtp, :sendmail, or any other valid ActionMailer delivery method
   :from   => 'raed.atoui@gmail.com',
-  :to     => ['raed.atoui@gmail.com', 'raed@your-majesty.com'],
+  :to     => ['raed.atoui@gmail.com'],
+  :body   => "testing body!",
   :github => 'raedatoui/generator',
   :smtp_settings => {
       address: "smtp.gmail.com",
@@ -97,7 +98,7 @@ namespace :deploy do
 
   desc "Update the deployed code."
   task :update_code, :except => { :no_release => true } do
-    run "cd #{current_path}; git fetch origin; git reset --hard #{branch}"
+    run "cd #{current_path}; git fetch origin; git reset --hard #{branch}; git submodule init; git submodule update"
     finalize_update
   end
 

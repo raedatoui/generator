@@ -17,9 +17,6 @@ gem "ancestry"
 gem "strong_parameters"
 gem "rails-erd"
 
-gem 'fb_graph'
-gem 'omniauth-facebook'
-
 gem "haml-rails"
 group :assets do
   gem "json2-rails"

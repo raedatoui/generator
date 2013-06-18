@@ -1,2 +1,11 @@
-.button#rotate
-	.icon.ui-rotate
+.actions
+	.button#rotate
+		.icon.ui-rotate
+
+	.button#flip
+		.icon R
+
+
+#mCanvas
+
+#display
