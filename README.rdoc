@@ -1,7 +1,0 @@
-== composer for cinder
-
-1. Import PSD xml => produce 2 tier graph
-2. visualize nodes => paper.js
-3. edit nodes and rerender
-4. add info panel for nodes
-5. file attachements
