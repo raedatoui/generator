@@ -25,16 +25,11 @@ class App.Tools extends App.BaseController
         panelClosed = true
 
         @routes
-            '/new/:type': (params) ->
-                console.log "yooo"
-                @deleteButton.hide()
-                @infoButton.hide()
-                $('.button').removeClass "selected"
-                if @current is undefined or @current.constructor.name != "LayerCreator"
-                    creator = new App.LayerCreator
-                    creator.bind "closed", @selectionMade
-                    @activateNext creator
-                    @addButton.addClass "selected"
+            '/new': (params) =>
+                @createNew()
+
+            '/new/:type': (params) =>
+                @createNew()
 
             '/edit/:id': (params) ->
                 console.log params
@@ -52,8 +47,18 @@ class App.Tools extends App.BaseController
                     props = new App.LayerInfo
                     @activateNext props
 
-
         @render()
+
+    createNew: =>
+        console.log "yooo"
+        @deleteButton.hide()
+        @infoButton.hide()
+        $('.button').removeClass "selected"
+        if @current is undefined or @current.constructor.name != "LayerCreator"
+            creator = new App.LayerCreator
+            creator.bind "closed", @selectionMade
+            @activateNext creator
+            @addButton.addClass "selected"
 
     render: =>
         @html @view("tools")
